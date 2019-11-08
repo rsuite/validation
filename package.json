@@ -1,0 +1,40 @@
+{
+  "name": "@rsuite/validation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "index.d.ts",
+  "files": [
+    "src",
+    "dist",
+    "*.d.ts"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "schema",
+    "validation",
+    "react",
+    "rsuite",
+    "form"
+  ],
+  "author": "Doma<leishenghao@126.com>",
+  "repository": "git@github.com:rsuite/validation.git",
+  "homepage": "https://github.com/rsuite/validation",
+  "license": "MIT",
+  "peerDependencies": {
+    "rsuite": "^3.8.4 || >=4.0.0"
+  },
+  "devDependencies": {
+    "@types/lodash.uniqby": "^4.7.6",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "rsuite": "^4.1.0",
+    "typescript": "^3.7.2"
+  },
+  "dependencies": {
+    "lodash.uniqby": "^4.7.0"
+  }
+}

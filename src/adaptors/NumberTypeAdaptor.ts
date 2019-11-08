@@ -1,0 +1,51 @@
+import { Schema } from 'rsuite';
+import { NumberType } from 'rsuite/es/Schema/NumberType';
+import BaseTypeAdaptor from './BaseTypeAdaptor';
+
+class NumberTypeAdaptor extends BaseTypeAdaptor<NumberType> {
+
+  protected $type = 'number';
+
+  protected $schemaType = Schema.Types.NumberType();
+
+  protected getSize(value: number): number {
+    return value;
+  }
+
+  // NumberType() native methods
+  in(...values: any[]): this {
+
+    this.getSchemaType().isOneOf(values.map(Number), this.getErrorMessage('in', { values }));
+
+    return this;
+  }
+
+  between(min: number, max: number): this {
+    this.getSchemaType().range(min, max, this.getErrorMessage('between', { min, max }));
+
+    return this;
+  }
+
+  min(value: number): this {
+
+    this.getSchemaType().min(value, this.getErrorMessage('min', { value }));
+
+    return this;
+  }
+
+  max(value: number): this {
+
+    this.getSchemaType().min(value, this.getErrorMessage('max', { value }));
+
+    return this;
+  }
+
+  integer(): this {
+
+    this.getSchemaType().isInteger(this.getErrorMessage('integer'));
+
+    return this;
+  }
+}
+
+export default NumberTypeAdaptor;
