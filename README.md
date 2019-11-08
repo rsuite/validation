@@ -148,6 +148,23 @@ Some rules are effective among all these types, some are only effective under sp
 - `notIn:value1,value2...` for `string`, `number`
 
     The field under validation must not be included in the given list of values.
+    
+- `email` for `string`
+
+    The field under validation must be formatted as an e-mail address.
+
+- `url` for `string`
+
+    The field under validation must be a valid URL.
+    
+- `unique:by?` for `array`
+
+    The array under validation must not have any duplicate items.
+    If `by` is provided for array of objects, duplication is checked by object property.
+
+- `integer` for `number`
+
+    The field under validation must be an integer.
 
 ## `@rsuite/schema-typed` API coverage
 
@@ -163,8 +180,8 @@ Some rules are effective among all these types, some are only effective under sp
 | API | Rule |
 | --- | ---- |
 | `StringType()` | `string` |
-| `.isEmail()` | - |
-| `.isURL()` | - |
+| `.isEmail()` | `email` |
+| `.isURL()` | `url` |
 | `.isOneOf(items)` | `in:value1,value2...` |
 | `.containsLetter()` | - |
 | `.containsUppercaseLetter()` | - |
@@ -181,7 +198,7 @@ Some rules are effective among all these types, some are only effective under sp
 | API | Rule |
 | --- | ---- |
 | `NumberType()` | `number` |
-| `.isInteger()` | - |
+| `.isInteger()` | `integer` |
 | `.isOneOf(items)` | `in:value1,value2...` |
 | `.pattern(regExp)` | - |
 | `.range(min, max)` | `between:min,max` |
@@ -196,7 +213,7 @@ Some rules are effective among all these types, some are only effective under sp
 | `.rangeLength(minLength, maxLength)` | `between:min,max` |
 | `.minLength(minLength)` | `min:value` |
 | `.maxLength(maxLength)` | `max:value` |
-| `.unrepeatable()` | - |
+| `.unrepeatable()` | `unique` |
 | `.of(type)` | Wildcard field expression |
 
 
