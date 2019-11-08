@@ -49,6 +49,44 @@ const validator = Validator.make({
 });
 ```
 
+### Custom error messages
+
+You can override error message for any rule, or for any rule on any field specifically.
+```js
+import { Validator } from '@rsuite/validation';
+
+const validator = Validator.make({
+  name: 'required',
+  email: 'required|email',
+  age: 'required|number|between:18,30'
+}, {
+  required: 'You should not omit {field}!',
+  'email.required'(field) {
+    return 'Email is a must.'
+  },
+  'age.between': 'Age should be between {min} and {max}'
+});
+```
+
+Learn more in Error messages.
+
+### Custom rules
+
+```js
+import { Validator } from '@rsuite/validation';
+
+const validator = Validator.make({
+  name: ['required', {
+    check(field, value, data) {
+      return value === 'Tom';
+    },
+    errorMessage: 'Only whose {field} is Tom shall pass.'
+  }]
+});
+```
+
+Learn more in Custom validation rules.
+
 ## API
 
 #### `Validator`
@@ -74,6 +112,60 @@ const validator = Validator.make({
 - `check(data: any): CheckResult`
     
     Equivalent to `validator.getSchemaModel().check()`
+
+## Error messages
+
+`@rsuite/validation` is packed with predefined messages for every built-in rules.
+You can define your own messages for Validator, either per rule or per rule per field.
+
+```js
+const validator = Validator.make({
+  name: 'required',
+  email: 'required|email',
+  age: 'required|number|between:18,30'
+}, {
+  required: customMessage1,
+  'age.between': customMessage2
+});
+```
+
+A custom message should be either a string or a `ErrorMessageFormatter`.
+
+```typescript
+interface ErrorMessageFormatter {
+  (field: string, placeholderValues?: any): string;
+}
+```
+
+### Placeholders
+
+You can use placeholders (marked with brackets) in your error message string.
+Note that you can only use them when your error message is a string, not a formatter function.
+
+```javascript
+const messages = {
+  required: '{field} is required.',
+  min: '{field} must be no smaller than {value}.'
+}
+```
+
+Each rule has different placeholders available, while `{field}` is available across all rules, representing the field name declared in your rules object.
+Most placeholders have the same name as the rule signature.
+Here is a full list of built-in rules that have placeholders in messages.
+
+| Rule signature | Placeholders |
+| -------------- | ------------ |
+| `size:value` | `{value}` |
+| `max:value` | `{value}` |
+| `min:value` | `{value}` |
+| `between:min,max` | `{min}`, `{max}` |
+| `same:other` | `{other}` |
+| `different:other` | `{other}` |
+| `in:value1,value2...` | `{values}` |
+| `notIn:value1,value2...` | `{values}` |
+| `unique:by?` | `{by}` |
+
+If you use `ErrorMessageFormatter`, placeholders values are passed in as an object to its second argument.
 
 ## Available rules
 
@@ -165,15 +257,47 @@ Some rules are effective among all these types, some are only effective under sp
 - `integer` for `number`
 
     The field under validation must be an integer.
+    
+    
+## Custom validation rules
+
+In addition to built-in validation rules, you can also define you own validation rules.
+
+```javascript
+Validator.make({
+  name: ['required', customRule1, customRule2],
+  email: ['required', 'email', customRule3]
+})
+```
+
+A custom rule must implement `Rule` interface.
+
+```typescript
+interface Rule {
+  /**
+   * Check whether the value passes this rule
+   */
+  check(field: string, value: any, data: any): boolean;
+
+  /**
+   * Message to show when this rule fails.
+   */
+  errorMessage: string | (field: string) => string;
+}
+```
 
 ## `@rsuite/schema-typed` API coverage
+
+The table below shows `@rsuite/schema-typed` API and their equivalent rules in `@rsuite/validation`.
+Note that *equivalent means equivalent*, which is, implementation of the rule is calling the according API.
+Those APIs that don't have an equivalent rule for now (marked as `-`) can still be achieved using Custom validation rules.
 
 - Common
 
 | API | Rule |
 | --- | ---- |
 | `.isRequired()` | `required` |
-| `.addRule()` | - |
+| `.addRule()` | Custom validation rules |
 
 - `StringType()`
 
