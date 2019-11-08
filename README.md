@@ -1,8 +1,8 @@
-# [WIP]@rsuite/validation
+# @rsuite/validation
 
 > Validate like a boss.
 
-    npm install -S @rsuite/validation # not now
+    npm install -S @rsuite/validation
     
 ## Features
 
@@ -96,6 +96,10 @@ Learn more in Custom validation rules.
 - `static make(rules: object, messages?: object): Validator`
 
     Create a validator from given rules and custom message if necessary.
+    
+- `static message(messages: object): void`
+
+    Define custom error messages for all Validators.
 
 - `static SchemaModel(rules: object, messages?: object): Schema`
     
@@ -135,6 +139,16 @@ A custom message should be either a string or a `ErrorMessageFormatter`.
 interface ErrorMessageFormatter {
   (field: string, placeholderValues?: any): string;
 }
+```
+
+### Defined messages globally
+
+Use `Validator.messages()` to register message bag globally.
+
+```javascript
+Validator.messages({
+  required: 'Please enter {field}.'
+})
 ```
 
 ### Placeholders
@@ -282,7 +296,7 @@ interface Rule {
   /**
    * Message to show when this rule fails.
    */
-  errorMessage: string | (field: string) => string;
+  errorMessage: string | ErrorMessageFormatter;
 }
 ```
 
