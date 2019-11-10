@@ -64,7 +64,10 @@ const validator = Validator.make({
   'email.required'(field) {
     return 'Email is a must.'
   },
-  'age.between': 'Age should be between {min} and {max}'
+  'age.between': 'Age should be between {min} and {max}',
+  fields: {
+    email: 'Email address'
+  }
 });
 ```
 
@@ -139,6 +142,21 @@ A custom message should be either a string or a `ErrorMessageFormatter`.
 interface ErrorMessageFormatter {
   (field: string, placeholderValues?: any): string;
 }
+```
+
+If you want to customize how your field names are displayed in the error messages (by default is capitalized), set them in `field` property of the message bag.
+
+```typescript
+const validator = Validator.make({
+  name: 'required',
+  email: 'required|email',
+  age: 'required|number|between:18,30'
+}, {
+  required: 'Please enter {field}',
+  fields: {
+    email: 'Email address'
+  }
+});
 ```
 
 ### Defined messages globally
