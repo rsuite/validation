@@ -11,8 +11,12 @@ export interface Rule {
   errorMessage: string | ErrorMessageFormatter;
 }
 
+interface TypedErrorMessageFormatter {
+  [type: string]: string | ErrorMessageFormatter;
+}
+
 interface MessageBag {
-  [rule: string]: string | ErrorMessageFormatter;
+  [rule: string]: string | ErrorMessageFormatter | TypedErrorMessageFormatter;
 }
 
 type RuleExpression = string;
@@ -22,16 +26,21 @@ interface RulesInput {
   [field: string]: RuleExpression | RuleType[];
 }
 
-declare interface Validator {
-  make(rules: RulesInput, messages?: MessageBag): Validator;
+declare interface ValidatorStatic {
+  make(rules: RulesInput, messages?: MessageBag): ValidatorInstance;
 
   SchemaModel(rules: RulesInput, messages?: MessageBag): Schema;
 
   messages(messages: MessageBag): void;
 }
 
-declare class Validator {
+declare interface ValidatorInstance {
+
+  getSchemaModel(): Schema;
+
   check(data: any): CheckResult;
 }
+
+declare const Validator: ValidatorStatic;
 
 export { Validator };
