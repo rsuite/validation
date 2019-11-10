@@ -53,11 +53,19 @@ class Validator {
       );
     }
     if (messages) {
-      this.$globalMessageBag = {
-        ...this.$globalMessageBag,
-        ...messages
-      };
+      this.$globalMessageBag = this.mergeMessageBag(this.$globalMessageBag, messages);
     }
+  }
+
+  protected static mergeMessageBag(origin: MessageBag, messages?: MessageBag): MessageBag {
+    return {
+      ...origin,
+      ...messages,
+      fields: {
+        ...origin.fields,
+        ...messages?.fields
+      }
+    };
   }
 
   protected $rawRules: RulesInput;
@@ -91,10 +99,7 @@ class Validator {
   }
 
   getMessageBag(): MessageBag {
-    return {
-      ...Validator.$globalMessageBag,
-      ...this.$messageBag
-    } as MessageBag;
+    return Validator.mergeMessageBag(Validator.$globalMessageBag, this.$messageBag);
   }
 
   protected parseRules(): void {
