@@ -1,11 +1,22 @@
-import { MessageBag, Validator } from './types';
+import { MessageBag, Validator, SchemaTypeAdaptor, ErrorMessageFormatter, TypedErrorMessageFormatter } from './types';
 
 class MessageFormatter {
 
   protected $validator: Validator;
 
+  protected $adaptor!: SchemaTypeAdaptor<any>;
+
   constructor(validator: Validator) {
     this.$validator = validator;
+  }
+
+  setAdaptor(adaptor: SchemaTypeAdaptor<any>): this {
+    this.$adaptor = adaptor;
+    return this;
+  }
+
+  getAdaptor(): SchemaTypeAdaptor<any> {
+    return this.$adaptor;
   }
 
   getMessageBag(): MessageBag {
@@ -16,7 +27,9 @@ class MessageFormatter {
 
     const messages = this.getMessageBag();
 
-    const message = messages[`${fieldName}.${rule}` as keyof MessageBag] ?? messages[rule as keyof MessageBag];
+    const ruleMessage = messages[`${fieldName}.${rule}` as keyof MessageBag] ?? messages[rule as keyof MessageBag];
+
+    const message = this.messageIsTyped(ruleMessage) ? ruleMessage[this.getAdaptor().getType()] : ruleMessage;
 
     if (!message) {
       console.warn(new Error(`No error message defined for rule '${rule}'.`));
@@ -29,6 +42,10 @@ class MessageFormatter {
     }
 
     return message(fieldName, placeholderValues);
+  }
+
+  protected messageIsTyped(message: any): message is TypedErrorMessageFormatter {
+    return !!message && typeof message === 'object';
   }
 
   renderMessageTemplate(template: string, placeholderValues: { [key: string]: any }): string {

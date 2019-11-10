@@ -1,32 +1,47 @@
-import { MessageBag } from './types';
+import { MessageBag } from "./types";
 
 const messages: MessageBag = {
+  required: "The {field} field is required.",
 
-  required: 'The {field} field is required.',
+  size: {
+    number: "The {field} must be {value}.",
+    string: "The {field} must be {value} characters.",
+    array: "The {field} must contain {value} items."
+  },
 
-  size: '{field} must have a size of {value}.',
+  min: {
+    number: "The {field} must be at least {value}.",
+    string: "The {field} must be at least {value} characters.",
+    array: "The {field} must have at least {value} items."
+  },
 
-  min: '{field} must have a size no smaller than {value}.',
+  max: {
+    number: "The {field} may not be greater than {value}.",
+    string: "The {field} may not be greater than {value} characters.",
+    array: "The {field} may not have more than {value} items."
+  },
 
-  max: '{field} must have a size no larger than {value}.',
+  between:  {
+    number: "The {field} must be between {min} and {max}.",
+    string: "The {field} must be between {min} and {max} characters.",
+    array: "The {field} must have between {min} and {max} items."
+  },
 
-  between: '{field} must have a size in range of {min}, {max}.',
+  same: "The {field} and {other} must match.",
 
-  same: '{field} must have a same value as {other}.',
+  different: "The {field} and {other} must be different.",
 
-  different: '{field} must have a different value from {other}.',
+  in: "The selected {field} is invalid.",
 
-  in: '',
+  notIn: "The selected {} is invalid.",
 
-  notIn: '',
+  email: "The {field} must be a valid email address.",
 
-  email: 'The {field} must be a valid email address.',
+  url: "The {field} format is invalid.",
 
-  url: 'The {field} format is invalid.',
+  unique: "The {field} field has duplicate items.",
 
-  unique: 'The {field} field has duplicate items.',
-
-  integer: 'The {field} must be an integer.'
+  integer: "The {field} must be an integer."
 };
 
 export default messages;

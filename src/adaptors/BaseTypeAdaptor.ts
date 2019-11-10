@@ -23,11 +23,15 @@ abstract class BaseTypeAdaptor<T extends CheckType> implements SchemaTypeAdaptor
 
   constructor(fieldName: string, validator: Validator) {
     this.$fieldName = fieldName;
-    this.$messageFormatter = new MessageFormatter(validator);
+    this.$messageFormatter = new MessageFormatter(validator).setAdaptor(this);
   }
 
   protected getFieldName(): string {
     return this.$fieldName;
+  }
+
+  getType(): string {
+    return this.$type;
   }
 
   setArrayAdaptor(adaptor: SchemaTypeArrayAdaptor<T>): void {

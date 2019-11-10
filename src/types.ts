@@ -5,8 +5,12 @@ export type ErrorMessageFormatter =
   | string
   | ((field: string, placeholderValues?: { [key: string]: any }) => string);
 
+export interface TypedErrorMessageFormatter {
+  [type: string]: ErrorMessageFormatter;
+}
+
 export interface MessageBag {
-  [key: string]: ErrorMessageFormatter;
+  [key: string]: ErrorMessageFormatter | TypedErrorMessageFormatter;
 }
 
 export type TypeSlug =
@@ -28,6 +32,9 @@ export interface ParsedTypeRule {
 }
 
 export interface SchemaTypeAdaptor<T extends CheckType> {
+
+  getType(): string;
+
   getSchemaType(): T;
 
   applyRules(rules: RuleType[]): this;
