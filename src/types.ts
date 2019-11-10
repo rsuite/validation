@@ -9,9 +9,15 @@ export interface TypedErrorMessageFormatter {
   [type: string]: ErrorMessageFormatter;
 }
 
-export interface MessageBag {
+export interface Messages {
   [key: string]: ErrorMessageFormatter | TypedErrorMessageFormatter;
 }
+
+export type MessageBag = Messages & {
+  fields?: {
+    [field: string]: string;
+  };
+};
 
 export type TypeSlug =
   | "string"
@@ -32,10 +38,11 @@ export interface ParsedTypeRule {
 }
 
 export interface SchemaTypeAdaptor<T extends CheckType> {
-
   getType(): string;
 
   getSchemaType(): T;
+
+  getFieldName(): string;
 
   applyRules(rules: RuleType[]): this;
 

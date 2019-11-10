@@ -94,7 +94,7 @@ class Validator {
     return {
       ...Validator.$globalMessageBag,
       ...this.$messageBag
-    };
+    } as MessageBag;
   }
 
   protected parseRules(): void {

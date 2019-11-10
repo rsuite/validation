@@ -15,9 +15,15 @@ interface TypedErrorMessageFormatter {
   [type: string]: string | ErrorMessageFormatter;
 }
 
-interface MessageBag {
+interface Messages {
   [rule: string]: string | ErrorMessageFormatter | TypedErrorMessageFormatter;
 }
+
+type MessageBag = Messages & {
+  fields?: {
+    [field: string]: string;
+  };
+};
 
 type RuleExpression = string;
 type RuleType = string | Rule;

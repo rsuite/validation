@@ -26,7 +26,7 @@ abstract class BaseTypeAdaptor<T extends CheckType> implements SchemaTypeAdaptor
     this.$messageFormatter = new MessageFormatter(validator).setAdaptor(this);
   }
 
-  protected getFieldName(): string {
+  getFieldName(): string {
     return this.$fieldName;
   }
 
@@ -60,17 +60,9 @@ abstract class BaseTypeAdaptor<T extends CheckType> implements SchemaTypeAdaptor
     } else if (this.isCustomRule(rule)) {
       this.getSchemaType().addRule(
         (value, data) => rule.check(this.getFieldName(), value, data),
-        this.formatCustomRuleMessage(rule.errorMessage)
+        this.$messageFormatter.formatMessage(rule.errorMessage)
       );
     }
-  }
-
-  protected formatCustomRuleMessage(message: ErrorMessageFormatter): string {
-    if (typeof message === 'string') {
-      return this.$messageFormatter.renderMessageTemplate(message, { field: this.getFieldName() });
-    }
-
-    return message(this.getFieldName());
   }
 
   protected isCustomRule(rule: any): rule is RuleInterface {
@@ -82,7 +74,7 @@ abstract class BaseTypeAdaptor<T extends CheckType> implements SchemaTypeAdaptor
   }
 
   protected getErrorMessage(rule: string, placeholderValues?: { [name: string]: any }): string {
-    return this.$messageFormatter.formatMessage(rule, this.getFieldName(), placeholderValues) ?? '';
+    return this.$messageFormatter.getFormattedMessage(rule, placeholderValues) ?? '';
   }
 
   applyRules(rules: RuleType[]): this {

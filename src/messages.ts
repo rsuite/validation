@@ -41,7 +41,7 @@ const messages: MessageBag = {
 
   unique: "The {field} field has duplicate items.",
 
-  integer: "The {field} must be an integer."
+  integer: "The {field} must be an integer.",
 };
 
 export default messages;

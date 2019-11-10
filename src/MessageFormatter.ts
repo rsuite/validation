@@ -1,4 +1,4 @@
-import { MessageBag, Validator, SchemaTypeAdaptor, ErrorMessageFormatter, TypedErrorMessageFormatter } from './types';
+import { MessageBag, Validator, SchemaTypeAdaptor, TypedErrorMessageFormatter, ErrorMessageFormatter } from './types';
 
 class MessageFormatter {
 
@@ -23,7 +23,9 @@ class MessageFormatter {
     return this.$validator.getMessageBag();
   }
 
-  formatMessage(rule: string, fieldName: string, placeholderValues?: { [name: string]: any }): string | null {
+  getFormattedMessage(rule: string, placeholderValues?: { [name: string]: any }): string | null {
+
+    const fieldName = this.getFieldName();
 
     const messages = this.getMessageBag();
 
@@ -36,19 +38,37 @@ class MessageFormatter {
 
       return null;
     }
+
+    return this.formatMessage(message, placeholderValues);
+  }
+
+  formatMessage(message: string | ErrorMessageFormatter, placeholderValues?: {[key: string]: any}): string {
+
     // message template
     if (typeof message === 'string') {
-      return this.renderMessageTemplate(message, { ...placeholderValues, field: fieldName });
+      return this.renderMessageTemplate(message, placeholderValues);
     }
 
-    return message(fieldName, placeholderValues);
+    return message(this.getFieldName(), placeholderValues);
+  }
+
+  getFieldName(): string {
+    return this.getAdaptor().getFieldName();
+  }
+
+  getFormattedFieldName(): string {
+    const fieldName = this.getFieldName();
+
+    return this.getMessageBag().fields?.[fieldName] ?? fieldName;
   }
 
   protected messageIsTyped(message: any): message is TypedErrorMessageFormatter {
     return !!message && typeof message === 'object';
   }
 
-  renderMessageTemplate(template: string, placeholderValues: { [key: string]: any }): string {
+  renderMessageTemplate(template: string, placeholderValues: { [key: string]: any } = {}): string {
+    placeholderValues.field = this.getFormattedFieldName();
+    
     return Object.keys(placeholderValues).reduce((str, key) => {
       return str.replace(`{${key}}`, placeholderValues[key]);
     }, template);
