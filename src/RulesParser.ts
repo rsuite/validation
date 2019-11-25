@@ -74,16 +74,20 @@ class RulesParser {
       if (!rawMap[parentPath].type) {
         if (path.endsWith("*")) {
           rawMap[parentPath].type = "array";
-          rawMap[parentPath].of = rawMap[path];
         } else {
           rawMap[parentPath].type = "object";
-          if (!rawMap[parentPath].shape) {
-            rawMap[parentPath].shape = {};
-          }
-          (rawMap[parentPath].shape as { [field: string]: ParsedTypeRule })[
-            path.substr(parentPath.length + 1)
-          ] = rawMap[path];
         }
+      }
+      if(rawMap[parentPath].type === 'array') {
+        rawMap[parentPath].of = rawMap[path];
+      }
+      if (rawMap[parentPath].type === 'object') {
+        if (!rawMap[parentPath].shape) {
+          rawMap[parentPath].shape = {};
+        }
+        (rawMap[parentPath].shape as { [field: string]: ParsedTypeRule })[
+          path.substr(parentPath.length + 1)
+        ] = rawMap[path];
       }
     }
   }
