@@ -6,8 +6,6 @@ class NumberTypeAdaptor extends BaseTypeAdaptor<NumberType> {
 
   protected $type = 'number';
 
-  protected $schemaType = Schema.Types.NumberType();
-
   protected getSize(value: number): number {
     return value;
   }

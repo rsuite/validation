@@ -10,6 +10,7 @@
     "*.d.ts"
   ],
   "scripts": {
+    "dev": "tsc --watch",
     "build": "tsc",
     "prepublishOnly": "npm run build"
   },
@@ -29,12 +30,14 @@
   },
   "devDependencies": {
     "@types/lodash.uniqby": "^4.7.6",
+    "@types/lodash.upperfirst": "^4.3.6",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "rsuite": "^4.1.0",
     "typescript": "^3.7.2"
   },
   "dependencies": {
-    "lodash.uniqby": "^4.7.0"
+    "lodash.uniqby": "^4.7.0",
+    "lodash.upperfirst": "^4.3.1"
   }
 }

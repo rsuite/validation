@@ -5,8 +5,6 @@ import BaseTypeAdaptor from './BaseTypeAdaptor';
 class BooleanTypeAdaptor extends BaseTypeAdaptor<BooleanType> {
 
   protected $type = 'boolean';
-
-  protected $schemaType = Schema.Types.BooleanType();
 }
 
 export default BooleanTypeAdaptor;

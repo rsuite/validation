@@ -1,4 +1,5 @@
-import { CheckType } from 'rsuite/es/Schema';
+import Schema, { CheckType } from 'rsuite/es/Schema';
+import _upperFirst from 'lodash.upperfirst';
 import {
   ErrorMessageFormatter,
   RuleInterface,
@@ -19,7 +20,9 @@ abstract class BaseTypeAdaptor<T extends CheckType> implements SchemaTypeAdaptor
 
   protected $arrayAdaptor?: SchemaTypeArrayAdaptor<T>;
 
-  protected abstract $schemaType: T;
+  protected $schemaType?: T;
+
+  protected $schemaTypeConstructor?: (...args: any[]) => T;
 
   constructor(fieldName: string, validator: Validator) {
     this.$fieldName = fieldName;
@@ -43,7 +46,18 @@ abstract class BaseTypeAdaptor<T extends CheckType> implements SchemaTypeAdaptor
   }
 
   getSchemaType(): T {
+    if (!this.$schemaType) {
+      this.$schemaType = this.makeSchemaType();
+    }
     return this.$schemaType;
+  }
+
+  protected makeSchemaType(): T {
+    return this.guessSchemaTypeConstructor()?.(this.getErrorMessage(this.$type));
+  }
+
+  protected guessSchemaTypeConstructor(): (...args: any[]) => T {
+    return this.$schemaTypeConstructor ?? (Schema.Types as any)[`${_upperFirst(this.$type)}Type`];
   }
 
   protected applyRule(rule: RuleType): void {

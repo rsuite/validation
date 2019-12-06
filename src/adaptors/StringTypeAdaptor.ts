@@ -6,8 +6,6 @@ class StringTypeAdaptor extends BaseTypeAdaptor<StringType> {
 
   protected $type = 'string';
 
-  protected $schemaType = Schema.Types.StringType();
-
   protected getSize(str: string): number {
     return str.length;
   }

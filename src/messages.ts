@@ -1,6 +1,19 @@
 import { MessageBag } from "./types";
 
 const messages: MessageBag = {
+
+  string: 'The {field} must be a string.',
+
+  number: 'The {field} must be a number.',
+
+  array: 'The {field} must be an array.',
+
+  date: 'The {field} is not a valid date.',
+
+  object: 'The {field} must be an object.',
+
+  boolean: 'The {field} must be true or false.',
+
   required: "The {field} field is required.",
 
   size: {

@@ -9,8 +9,6 @@ class ArrayTypeAdaptor<T extends CheckType = any> extends BaseTypeAdaptor<ArrayT
 
   protected $type = 'array';
 
-  protected $schemaType = Schema.Types.ArrayType();
-
   protected $itemAdaptor?: SchemaTypeAdaptor<T>;
 
   protected getSize(array: any[]): number {

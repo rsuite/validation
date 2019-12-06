@@ -6,8 +6,6 @@ class ObjectTypeAdaptor extends BaseTypeAdaptor<ObjectType> {
 
   protected $type = 'object';
 
-  protected $schemaType = Schema.Types.ObjectType();
-
 }
 
 export default ObjectTypeAdaptor;
