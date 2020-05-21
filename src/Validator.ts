@@ -1,7 +1,7 @@
 import { Schema } from "rsuite";
-import { CheckType } from "rsuite/es/Schema";
-import { ObjectType } from "rsuite/es/Schema/ObjectType";
-import { CheckResult } from "rsuite/es/Schema/Type";
+import { CheckType } from "rsuite/lib/Schema";
+import { ObjectType } from "rsuite/lib/Schema/ObjectType";
+import { CheckResult } from "rsuite/lib/Schema/Type";
 import {
   MessageBag,
   ParsedTypeRule,

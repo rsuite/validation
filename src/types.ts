@@ -1,5 +1,5 @@
-import { CheckType } from "rsuite/es/Schema";
-import { ArrayType } from "rsuite/es/Schema/ArrayType";
+import { CheckType } from "rsuite/lib/Schema";
+import { ArrayType } from "rsuite/lib/Schema/ArrayType";
 
 export type ErrorMessageFormatter =
   | string

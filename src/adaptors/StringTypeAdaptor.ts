@@ -1,5 +1,5 @@
 import { Schema } from 'rsuite';
-import { StringType } from 'rsuite/es/Schema/StringType';
+import { StringType } from 'rsuite/lib/Schema/StringType';
 import BaseTypeAdaptor from './BaseTypeAdaptor';
 
 class StringTypeAdaptor extends BaseTypeAdaptor<StringType> {

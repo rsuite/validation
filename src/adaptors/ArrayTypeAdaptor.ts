@@ -1,9 +1,9 @@
 import { Schema } from 'rsuite';
-import { ArrayType } from 'rsuite/es/Schema/ArrayType';
+import { ArrayType } from 'rsuite/lib/Schema/ArrayType';
 import _uniqBy from 'lodash.uniqby';
 import BaseTypeAdaptor from './BaseTypeAdaptor';
 import { SchemaTypeAdaptor, SchemaTypeArrayAdaptor } from '../types';
-import { CheckType } from 'rsuite/es/Schema';
+import { CheckType } from 'rsuite/lib/Schema';
 
 class ArrayTypeAdaptor<T extends CheckType = any> extends BaseTypeAdaptor<ArrayType> implements SchemaTypeArrayAdaptor<T> {
 

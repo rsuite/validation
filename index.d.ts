@@ -1,5 +1,5 @@
-import { Schema } from "rsuite/es/Schema/Schema";
-import { CheckResult } from "rsuite/es/Schema/Type";
+import { Schema } from "rsuite/lib/Schema/Schema";
+import { CheckResult } from "rsuite/lib/Schema/Type";
 
 interface ErrorMessageFormatter {
   (field: string, placeholderValues?: { [key: string]: any }): string;

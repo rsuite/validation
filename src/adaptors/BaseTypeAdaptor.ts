@@ -1,4 +1,4 @@
-import Schema, { CheckType } from 'rsuite/es/Schema';
+import Schema, { CheckType } from 'rsuite/lib/Schema';
 import _upperFirst from 'lodash.upperfirst';
 import {
   ErrorMessageFormatter,
