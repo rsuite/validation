@@ -52,6 +52,8 @@ const messages: MessageBag = {
 
   url: "The {field} format is invalid.",
 
+  regex: "The {field} format is invalid.",
+
   unique: "The {field} field has duplicate items.",
 
   integer: "The {field} must be an integer.",

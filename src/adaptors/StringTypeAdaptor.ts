@@ -49,6 +49,12 @@ class StringTypeAdaptor extends BaseTypeAdaptor<StringType> {
 
     return this;
   }
+
+  regex(pattern: string): this {
+    this.getSchemaType().pattern(new RegExp(pattern), this.getErrorMessage('regex'));
+
+    return this;
+  }
 }
 
 export default StringTypeAdaptor;
