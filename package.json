@@ -11,6 +11,7 @@
   ],
   "scripts": {
     "dev": "tsc --watch",
+    "prebuild": "npm test",
     "build": "tsc",
     "prepublishOnly": "npm run build",
     "test": "jest --coverage"
