@@ -200,6 +200,10 @@ Here is a full list of built-in rules that have placeholders in messages.
 | `notIn:value1,value2...` | `{values}` |
 | `unique:by?` | `{by}` |
 | `regex:pattern` | `{pattern}` |
+| `after:date` | `{date}` |
+| `afterOrEqual:date` | `{date}` |
+| `before:date` | `{date}` |
+| `beforeOrEqual:date` | `{date}` |
 
 If you use `ErrorMessageFormatter`, placeholders values are passed in as an object to its second argument.
 
@@ -299,6 +303,22 @@ Some rules are effective among all these types, some are only effective under sp
     The field under validation must match the given regular expression.
 
     **Note:** When using the `regex` patterns, it may be necessary to specify rules in an array instead of using pipe delimiters, especially if the regular expression contains a pipe character.
+
+- `after:date` for `date`
+
+    The field under validation must be a value after a given date. The dates will be passed into `new Date(date)`.
+
+- `afterOrEqual:date` for `date`
+
+    The field under validation must be a value after or equal to the given date. The dates will be passed into `new Date(date)`.
+
+- `before:date` for `date`
+
+    The field under validation must be a value preceding the given date. The dates will be passed into `new Date(date)`.
+
+- `beforeOrEqual:date` for `date`
+
+    The field under validation must be a value preceding or equal to the given date. The dates will be passed into `new Date(date)`.
     
 ## Custom validation rules
 
@@ -387,9 +407,9 @@ Those APIs that don't have an equivalent rule for now (marked as `-`) can still 
 | API | Rule |
 | --- | ---- |
 | `DateType()` | `date` |
-| `.range(min,max)` | - |
-| `.min(min)` | - |
-| `.max(max)` | - |
+| `.range(min,max)` | `afterOrEqual:min|beforeOrEqual:max` |
+| `.min(min)` | `afterOrEqual:date` |
+| `.max(max)` | `beforeOrEqual:date` |
 
 - `ObjectType()`
 
