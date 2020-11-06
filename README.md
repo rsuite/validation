@@ -293,7 +293,7 @@ Some rules are effective among all these types, some are only effective under sp
 
     The field under validation must be an integer.
 
-- `regex:pattern` for `string`
+- `regex:pattern` for `string`, `number`
 
     The field under validation must match the given regular expression.
 
@@ -364,7 +364,7 @@ Those APIs that don't have an equivalent rule for now (marked as `-`) can still 
 | `NumberType()` | `number` |
 | `.isInteger()` | `integer` |
 | `.isOneOf(items)` | `in:value1,value2...` |
-| `.pattern(regExp)` | - |
+| `.pattern(regExp)` | `regex:pattern` |
 | `.range(min, max)` | `between:min,max` |
 | `.min(min)` | `min:value` |
 | `.max(max)` | `max:value` |

@@ -44,6 +44,12 @@ class NumberTypeAdaptor extends BaseTypeAdaptor<NumberType> {
 
     return this;
   }
+
+  regex(pattern: string): this {
+    this.getSchemaType().pattern(new RegExp(pattern), this.getErrorMessage('regex'));
+
+    return this;
+  }
 }
 
 export default NumberTypeAdaptor;
