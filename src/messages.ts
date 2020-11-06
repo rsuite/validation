@@ -57,6 +57,14 @@ const messages: MessageBag = {
   unique: "The {field} field has duplicate items.",
 
   integer: "The {field} must be an integer.",
+
+  after: "The {field} must be a date after {date}.",
+
+  afterOrEqual: "The {field} must be a date after or equal to {date}.",
+
+  before: "The {field} must be a date before {date}.",
+
+  beforeOrEqual: "The {field} must be a date before or equal to {date}."
 };
 
 export default messages;
