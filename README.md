@@ -199,6 +199,7 @@ Here is a full list of built-in rules that have placeholders in messages.
 | `in:value1,value2...` | `{values}` |
 | `notIn:value1,value2...` | `{values}` |
 | `unique:by?` | `{by}` |
+| `regex:pattern` | `{pattern}` |
 
 If you use `ErrorMessageFormatter`, placeholders values are passed in as an object to its second argument.
 
