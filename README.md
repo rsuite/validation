@@ -12,7 +12,7 @@
 - Rich built-in validation rules called with a single expression.
 - Auto-detects objects and arrays.
 - Easy to extend.
-- `@rsuite/schema-typed` as data validation.
+- [`rsuite/schema-typed`](https://github.com/rsuite/schema-typed) as data validation.
 
 ## Usage
 
@@ -421,7 +421,7 @@ Those APIs that don't have an equivalent rule for now (marked as `-`) can still 
 ## Prior Art
 
 - Inspired by Laravel Validation.
-- Implemented with `@rsuite/schema-typed`.
+- Implemented with [`rsuite/schema-typed`](https://github.com/rsuite/schema-typed).
 
 ## License
 
