@@ -329,7 +329,7 @@ interface Rule {
 ## `@rsuite/schema-typed` API coverage
 
 The table below shows `@rsuite/schema-typed` API and their equivalent rules in `@rsuite/validation`.
-Note that *equivalent means equivalent*, which is, implementation of the rule is calling the according API.
+Note that *equivalent means equivalent*, which is, implementation of the rule is calling the according API or copies its underlying implementation.
 Those APIs that don't have an equivalent rule for now (marked as `-`) can still be achieved using Custom validation rules.
 
 - Common
@@ -347,11 +347,11 @@ Those APIs that don't have an equivalent rule for now (marked as `-`) can still 
 | `.isEmail()` | `email` |
 | `.isURL()` | `url` |
 | `.isOneOf(items)` | `in:value1,value2...` |
-| `.containsLetter()` | - |
-| `.containsUppercaseLetter()` | - |
-| `.containsLowercaseLetter()` | - |
-| `.containsLetterOnly()` | - |
-| `.containsNumber()` | - |
+| `.containsLetter()` | `regex:[a-zA-Z]` |
+| `.containsUppercaseLetter()` | `regex:[A-Z]` |
+| `.containsLowercaseLetter()` | `regex:[a-z]` |
+| `.containsLetterOnly()` | `regex:^[a-zA-Z]+$` |
+| `.containsNumber()` | `regex:[0-9]` |
 | `.pattern(regExp)` | `regex:pattern` |
 | `.rangeLength(minLength, maxLength)` | `between:min,max` |
 | `.minLength(minLength)` | `min:value` |
