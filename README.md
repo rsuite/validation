@@ -289,7 +289,12 @@ Some rules are effective among all these types, some are only effective under sp
 - `integer` for `number`
 
     The field under validation must be an integer.
-    
+
+- `regex:pattern` for `string`
+
+    The field under validation must match the given regular expression.
+
+    **Note:** When using the `regex` patterns, it may be necessary to specify rules in an array instead of using pipe delimiters, especially if the regular expression contains a pipe character.
     
 ## Custom validation rules
 
@@ -344,7 +349,7 @@ Those APIs that don't have an equivalent rule for now (marked as `-`) can still 
 | `.containsLowercaseLetter()` | - |
 | `.containsLetterOnly()` | - |
 | `.containsNumber()` | - |
-| `.pattern(regExp)` | - |
+| `.pattern(regExp)` | `regex:pattern` |
 | `.rangeLength(minLength, maxLength)` | `between:min,max` |
 | `.minLength(minLength)` | `min:value` |
 | `.maxLength(maxLength)` | `max:value` |
