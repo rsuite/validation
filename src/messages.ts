@@ -46,7 +46,7 @@ const messages: MessageBag = {
 
   in: "The selected {field} is invalid.",
 
-  notIn: "The selected {} is invalid.",
+  notIn: "The selected {field} is invalid.",
 
   email: "The {field} must be a valid email address.",
 
