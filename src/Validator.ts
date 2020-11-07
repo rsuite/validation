@@ -36,11 +36,11 @@ class Validator {
     return this.make(rules, messages).getSchemaModel();
   }
 
-  static check(
-    data: any,
+  static check<DataType = any>(
+    data: DataType,
     rules: RulesInput,
     messages?: MessageBag
-  ): SchemaCheckResult<any, string> {
+  ): SchemaCheckResult<DataType, string> {
     return this.make(rules, messages).check(data);
   }
 
@@ -84,8 +84,8 @@ class Validator {
     this.makeSchemaModel();
   }
 
-  check(data: any): SchemaCheckResult<any, string> {
-    return this.getSchemaModel().check(data);
+  check<DataType = any>(data: DataType): SchemaCheckResult<DataType, string> {
+    return (this.getSchemaModel() as Schema<DataType>).check(data);
   }
 
   getRawRules(): RulesInput {
