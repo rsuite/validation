@@ -33,7 +33,7 @@ class NumberTypeAdaptor extends BaseTypeAdaptor<NumberType> {
 
   max(value: number): this {
 
-    this.getSchemaType().min(value, this.getErrorMessage('max', { value }));
+    this.getSchemaType().max(value, this.getErrorMessage('max', { value }));
 
     return this;
   }
