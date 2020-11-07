@@ -1,7 +1,7 @@
-import Schema, { CheckType } from 'rsuite/lib/Schema';
+import { CheckType } from 'schema-typed';
+import * as Types from 'schema-typed';
 import _upperFirst from 'lodash.upperfirst';
 import {
-  ErrorMessageFormatter,
   RuleInterface,
   RuleType,
   SchemaTypeAdaptor,
@@ -57,7 +57,7 @@ abstract class BaseTypeAdaptor<T extends CheckType> implements SchemaTypeAdaptor
   }
 
   protected guessSchemaTypeConstructor(): (...args: any[]) => T {
-    return this.$schemaTypeConstructor ?? (Schema.Types as any)[`${_upperFirst(this.$type)}Type`];
+    return this.$schemaTypeConstructor ?? (Types as any)[`${_upperFirst(this.$type)}Type`];
   }
 
   protected applyRule(rule: RuleType): void {

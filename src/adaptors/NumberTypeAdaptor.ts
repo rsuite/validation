@@ -1,5 +1,4 @@
-import { Schema } from 'rsuite';
-import { NumberType } from 'rsuite/lib/Schema/NumberType';
+import { NumberType } from 'schema-typed/types/NumberType';
 import BaseTypeAdaptor from './BaseTypeAdaptor';
 
 class NumberTypeAdaptor extends BaseTypeAdaptor<NumberType> {

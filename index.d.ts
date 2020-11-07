@@ -1,5 +1,13 @@
-import { Schema } from "rsuite/lib/Schema/Schema";
-import { CheckResult } from "rsuite/lib/Schema/Type";
+import { Schema } from "schema-typed";
+
+type SchemaCheckResult<S, ErrorMsgType = string> = {
+  [K in keyof S]: CheckResult<ErrorMsgType>
+};
+
+interface CheckResult<ErrorMsgType = string> {
+  hasError: boolean;
+  errorMessage: ErrorMsgType;
+}
 
 interface ErrorMessageFormatter {
   (field: string, placeholderValues?: { [key: string]: any }): string;
@@ -40,11 +48,11 @@ declare interface ValidatorStatic {
   messages(messages: MessageBag): void;
 }
 
-declare interface ValidatorInstance {
+declare interface ValidatorInstance<S = any> {
 
   getSchemaModel(): Schema;
 
-  check(data: any): CheckResult;
+  check(data: any): SchemaCheckResult<S>;
 }
 
 declare const Validator: ValidatorStatic;

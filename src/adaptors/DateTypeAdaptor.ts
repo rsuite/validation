@@ -1,5 +1,4 @@
-import { Schema } from 'rsuite';
-import { DateType } from 'rsuite/lib/Schema/DateType';
+import { DateType } from 'schema-typed/types/DateType';
 import BaseTypeAdaptor from './BaseTypeAdaptor';
 
 class DateTypeAdaptor extends BaseTypeAdaptor<DateType> {

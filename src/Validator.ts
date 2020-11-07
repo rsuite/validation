@@ -1,11 +1,11 @@
-import { Schema } from "rsuite";
-import { CheckType } from "rsuite/lib/Schema";
-import { ObjectType } from "rsuite/lib/Schema/ObjectType";
-import { CheckResult } from "rsuite/lib/Schema/Type";
+import { CheckType, SchemaModel, Schema } from "schema-typed";
+import { ObjectType } from "schema-typed/types/ObjectType";
 import {
+  CheckResult,
   MessageBag,
   ParsedTypeRule,
   RulesInput,
+  SchemaCheckResult,
   SchemaTypeAdaptor
 } from "./types";
 import StringTypeAdaptor from "./adaptors/StringTypeAdaptor";
@@ -16,8 +16,6 @@ import NumberTypeAdaptor from "./adaptors/NumberTypeAdaptor";
 import BooleanTypeAdaptor from "./adaptors/BooleanTypeAdaptor";
 import DateTypeAdaptor from "./adaptors/DateTypeAdaptor";
 import defaultMessageBag from "./messages";
-
-type RSuiteSchemaModel = ReturnType<typeof Schema.Model>;
 
 class Validator {
   /**
@@ -34,7 +32,7 @@ class Validator {
   static SchemaModel(
     rules: RulesInput,
     messages?: MessageBag
-  ): RSuiteSchemaModel {
+  ): Schema {
     return this.make(rules, messages).getSchemaModel();
   }
 
@@ -42,7 +40,7 @@ class Validator {
     data: any,
     rules: RulesInput,
     messages?: MessageBag
-  ): CheckResult {
+  ): SchemaCheckResult<any, string> {
     return this.make(rules, messages).check(data);
   }
 
@@ -74,7 +72,7 @@ class Validator {
     [field: string]: ParsedTypeRule;
   };
 
-  protected $schemaModel!: RSuiteSchemaModel;
+  protected $schemaModel!: Schema;
 
   protected $messageBag?: MessageBag;
 
@@ -86,7 +84,7 @@ class Validator {
     this.makeSchemaModel();
   }
 
-  check(data: any): CheckResult<string> {
+  check(data: any): SchemaCheckResult<any, string> {
     return this.getSchemaModel().check(data);
   }
 
@@ -167,10 +165,10 @@ class Validator {
   }
 
   protected makeSchemaModel(): void {
-    this.$schemaModel = Schema.Model(this.makeSchemaModelSchema());
+    this.$schemaModel = SchemaModel(this.makeSchemaModelSchema());
   }
 
-  getSchemaModel(): RSuiteSchemaModel {
+  getSchemaModel(): Schema {
     return this.$schemaModel;
   }
 }

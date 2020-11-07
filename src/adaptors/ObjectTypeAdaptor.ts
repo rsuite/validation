@@ -1,5 +1,4 @@
-import { Schema} from 'rsuite';
-import { ObjectType } from 'rsuite/lib/Schema/ObjectType';
+import { ObjectType } from 'schema-typed/types/ObjectType';
 import BaseTypeAdaptor from './BaseTypeAdaptor';
 
 class ObjectTypeAdaptor extends BaseTypeAdaptor<ObjectType> {

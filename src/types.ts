@@ -1,5 +1,14 @@
-import { CheckType } from "rsuite/lib/Schema";
-import { ArrayType } from "rsuite/lib/Schema/ArrayType";
+import { CheckType } from "schema-typed";
+import { ArrayType } from "schema-typed/types/ArrayType";
+
+export type SchemaCheckResult<S, ErrorMsgType> = {
+  [K in keyof S]: CheckResult<ErrorMsgType>
+};
+
+export interface CheckResult<ErrorMsgType = string> {
+  hasError: boolean;
+  errorMessage: ErrorMsgType;
+}
 
 export type ErrorMessageFormatter =
   | string
