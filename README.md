@@ -52,6 +52,18 @@ const validator = Validator.make({
 });
 ```
 
+On the other hand, if your field name contains a literal period, you can explicitly prevent this from being interpreted as "dot" syntax by escaping the period with a backslash:
+
+```js
+import { Validator } from '@rsuite/validation';
+
+const validator = Validator.make({
+  "v1\\.0": "required",
+  "object\\.withDot.property": "required", // { 'object.withDot' : { property }}
+  "anotherObject.withDot\\.inProperty": "required", // { anotherObject: { 'withDot.inProperty' }}
+});
+```
+
 ### Custom error messages
 
 You can override error message for any rule, or for any rule on any field specifically.
