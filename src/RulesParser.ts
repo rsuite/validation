@@ -10,7 +10,7 @@ class RulesParser {
     "date",
     "boolean",
     "array",
-    "object"
+    "object",
   ];
 
   protected isTypeRule(rule: string): boolean {
@@ -25,23 +25,23 @@ class RulesParser {
 
       acc[path] = {
         path,
-        type: rules.find(rule => this.isTypeRule(rule as string)) as TypeSlug,
-        rules: rules.filter(rule => !this.isTypeRule(rule as string))
+        type: rules.find((rule) => this.isTypeRule(rule as string)) as TypeSlug,
+        rules: rules.filter((rule) => !this.isTypeRule(rule as string)),
       };
 
       return acc;
     }, {});
 
     Object.keys(rawMap)
-      .filter(path => path.includes("."))
-      .forEach(path => {
+      .filter((path) => /[^\\]\./.test(path))
+      .forEach((path) => {
         this.mergeWildcardToParents(path, rawMap);
       });
 
     return Object.keys(rawMap)
-      .filter(path => !path.includes("."))
+      .filter((path) => !/[^\\]\./.test(path))
       .reduce<{ [path: string]: ParsedTypeRule }>((acc, path) => {
-        acc[path] = rawMap[path];
+        acc[path.replace(/\\\./g, ".")] = rawMap[path];
         return acc;
       }, {});
   }
@@ -66,7 +66,7 @@ class RulesParser {
         rawMap[parentPath] = {
           path: parentPath,
           type: undefined,
-          rules: []
+          rules: [],
         };
         this.mergeWildcardToParents(parentPath, rawMap);
       }
@@ -78,26 +78,29 @@ class RulesParser {
           rawMap[parentPath].type = "object";
         }
       }
-      if(rawMap[parentPath].type === 'array') {
+      if (rawMap[parentPath].type === "array") {
         rawMap[parentPath].of = rawMap[path];
       }
-      if (rawMap[parentPath].type === 'object') {
+      if (rawMap[parentPath].type === "object") {
         if (!rawMap[parentPath].shape) {
           rawMap[parentPath].shape = {};
         }
         (rawMap[parentPath].shape as { [field: string]: ParsedTypeRule })[
-          path.substr(parentPath.length + 1)
+          path.substr(parentPath.length + 1).replace(/\\\./g, ".")
         ] = rawMap[path];
       }
     }
   }
 
   protected getParentPath(path: string): string | null {
-    if (!path.includes(".")) return null;
+    let lastDotWithoutBackslashIndex = -1;
+    const regex = /[^\\]\./g;
+    while (regex.exec(path) !== null) {
+      lastDotWithoutBackslashIndex = regex.lastIndex - 1;
+    }
+    if (lastDotWithoutBackslashIndex === -1) return null;
 
-    const lastDotIndex = path.lastIndexOf(".");
-
-    return path.substr(0, lastDotIndex);
+    return path.substr(0, lastDotWithoutBackslashIndex);
   }
 }
 
