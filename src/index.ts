@@ -1,7 +1,4 @@
-import Validator from './Validator';
-import { RuleInterface } from './types';
+import Validator from "./Validator";
+import { RuleInterface } from "./types";
 
-export {
-  Validator,
-  RuleInterface as Rule
-};
+export { Validator, RuleInterface as Rule };

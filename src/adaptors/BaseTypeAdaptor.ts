@@ -1,17 +1,17 @@
-import Schema, { CheckType } from 'rsuite/lib/Schema';
-import _upperFirst from 'lodash.upperfirst';
+import Schema, { CheckType } from "rsuite/lib/Schema";
+import _upperFirst from "lodash.upperfirst";
 import {
   ErrorMessageFormatter,
   RuleInterface,
   RuleType,
   SchemaTypeAdaptor,
   SchemaTypeArrayAdaptor,
-  Validator
-} from '../types';
-import MessageFormatter from '../MessageFormatter';
+  Validator,
+} from "../types";
+import MessageFormatter from "../MessageFormatter";
 
-abstract class BaseTypeAdaptor<T extends CheckType> implements SchemaTypeAdaptor<T> {
-
+abstract class BaseTypeAdaptor<T extends CheckType>
+  implements SchemaTypeAdaptor<T> {
   protected $fieldName: string;
 
   protected $messageFormatter: MessageFormatter;
@@ -53,23 +53,31 @@ abstract class BaseTypeAdaptor<T extends CheckType> implements SchemaTypeAdaptor
   }
 
   protected makeSchemaType(): T {
-    return this.guessSchemaTypeConstructor()?.(this.getErrorMessage(this.$type));
+    return this.guessSchemaTypeConstructor()?.(
+      this.getErrorMessage(this.$type)
+    );
   }
 
   protected guessSchemaTypeConstructor(): (...args: any[]) => T {
-    return this.$schemaTypeConstructor ?? (Schema.Types as any)[`${_upperFirst(this.$type)}Type`];
+    return (
+      this.$schemaTypeConstructor ??
+      (Schema.Types as any)[`${_upperFirst(this.$type)}Type`]
+    );
   }
 
   protected applyRule(rule: RuleType): void {
-    if (typeof rule === 'string') {
-      const [slug, args] = rule.split(':', 2);
+    if (typeof rule === "string") {
+      const [slug, args] = rule.split(":", 2);
 
       const method = this[slug as keyof this];
 
-      if (typeof method !== 'function') {
-        this.ignoreRule(rule, `no such rule as '${slug}' is found on type '${this.$type}'`);
+      if (typeof method !== "function") {
+        this.ignoreRule(
+          rule,
+          `no such rule as '${slug}' is found on type '${this.$type}'`
+        );
       } else {
-        method.apply(this, (args ?? '').split(','));
+        method.apply(this, (args ?? "").split(","));
       }
     } else if (this.isCustomRule(rule)) {
       this.getSchemaType().addRule(
@@ -80,20 +88,30 @@ abstract class BaseTypeAdaptor<T extends CheckType> implements SchemaTypeAdaptor
   }
 
   protected isCustomRule(rule: any): rule is RuleInterface {
-    return !!rule && typeof rule === 'object' && typeof rule.check === 'function';
+    return (
+      !!rule && typeof rule === "object" && typeof rule.check === "function"
+    );
   }
 
   protected ignoreRule(rule: string, reason: string): void {
-    console.warn(new Error(`Validation '${rule}' for field '${this.getFieldName()}' is ignored because ${reason}.`));
+    console.warn(
+      new Error(
+        `Validation '${rule}' for field '${this.getFieldName()}' is ignored because ${reason}.`
+      )
+    );
   }
 
-  protected getErrorMessage(rule: string, placeholderValues?: { [name: string]: any }): string {
-    return this.$messageFormatter.getFormattedMessage(rule, placeholderValues) ?? '';
+  protected getErrorMessage(
+    rule: string,
+    placeholderValues?: { [name: string]: any }
+  ): string {
+    return (
+      this.$messageFormatter.getFormattedMessage(rule, placeholderValues) ?? ""
+    );
   }
 
   applyRules(rules: RuleType[]): this {
-
-    rules.forEach(rule => {
+    rules.forEach((rule) => {
       this.applyRule(rule);
     });
 
@@ -104,8 +122,7 @@ abstract class BaseTypeAdaptor<T extends CheckType> implements SchemaTypeAdaptor
    * Common rules implementations
    */
   required(): this {
-
-    this.getSchemaType().isRequired(this.getErrorMessage('required'));
+    this.getSchemaType().isRequired(this.getErrorMessage("required"));
 
     return this;
   }
@@ -113,80 +130,70 @@ abstract class BaseTypeAdaptor<T extends CheckType> implements SchemaTypeAdaptor
   protected getSize?(value: any): number;
 
   size(value: number): this {
-
-    this.getSchemaType().addRule(v => {
+    this.getSchemaType().addRule((v) => {
       return this.getSize!(v) === +value;
-    }, this.getErrorMessage('size', { value }));
+    }, this.getErrorMessage("size", { value }));
 
     return this;
   }
 
   min(value: number): this {
-
-    this.getSchemaType().addRule(v => {
+    this.getSchemaType().addRule((v) => {
       return this.getSize!(v) >= +value;
-    }, this.getErrorMessage('min', { value }));
+    }, this.getErrorMessage("min", { value }));
 
     return this;
   }
 
   max(value: number): this {
-
-    this.getSchemaType().addRule(v => {
+    this.getSchemaType().addRule((v) => {
       return this.getSize!(v) <= +value;
-    }, this.getErrorMessage('max', { value }));
+    }, this.getErrorMessage("max", { value }));
 
     return this;
   }
 
   between(min: number, max: number): this {
-
-    this.getSchemaType().addRule(v => {
-
+    this.getSchemaType().addRule((v) => {
       const size = this.getSize!(v);
 
       return size >= +min && size <= +max;
-    }, this.getErrorMessage('between', { min, max }));
+    }, this.getErrorMessage("between", { min, max }));
 
     return this;
   }
 
   same(field: string): this {
-
     this.getSchemaType().addRule((value, data) => {
       return value === data[field];
-    }, this.getErrorMessage('same', { other: field }));
+    }, this.getErrorMessage("same", { other: field }));
 
     return this;
   }
 
   different(field: string): this {
-
     this.getSchemaType().addRule((value, data) => {
       return value !== data[field];
-    }, this.getErrorMessage('same', { other: field }));
+    }, this.getErrorMessage("same", { other: field }));
 
     return this;
   }
 
   in(...values: any[]): this {
-
-    this.getSchemaType().addRule(value => {
+    this.getSchemaType().addRule((value) => {
       return values.includes(value);
-    }, this.getErrorMessage('in', { values }));
+    }, this.getErrorMessage("in", { values }));
 
     return this;
   }
 
   notIn(...values: any[]): this {
-
-    this.getSchemaType().addRule(value => {
+    this.getSchemaType().addRule((value) => {
       return !values.includes(value);
-    }, this.getErrorMessage('notIn', { values }));
+    }, this.getErrorMessage("notIn", { values }));
 
     return this;
   }
 }
-
 
 export default BaseTypeAdaptor;

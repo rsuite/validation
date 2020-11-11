@@ -6,7 +6,7 @@ import {
   MessageBag,
   ParsedTypeRule,
   RulesInput,
-  SchemaTypeAdaptor
+  SchemaTypeAdaptor,
 } from "./types";
 import StringTypeAdaptor from "./adaptors/StringTypeAdaptor";
 import ArrayTypeAdaptor from "./adaptors/ArrayTypeAdaptor";
@@ -53,18 +53,24 @@ class Validator {
       );
     }
     if (messages) {
-      this.$globalMessageBag = this.mergeMessageBag(this.$globalMessageBag, messages);
+      this.$globalMessageBag = this.mergeMessageBag(
+        this.$globalMessageBag,
+        messages
+      );
     }
   }
 
-  protected static mergeMessageBag(origin: MessageBag, messages?: MessageBag): MessageBag {
+  protected static mergeMessageBag(
+    origin: MessageBag,
+    messages?: MessageBag
+  ): MessageBag {
     return {
       ...origin,
       ...messages,
       fields: {
         ...origin.fields,
-        ...messages?.fields
-      }
+        ...messages?.fields,
+      },
     };
   }
 
@@ -99,7 +105,10 @@ class Validator {
   }
 
   getMessageBag(): MessageBag {
-    return Validator.mergeMessageBag(Validator.$globalMessageBag, this.$messageBag);
+    return Validator.mergeMessageBag(
+      Validator.$globalMessageBag,
+      this.$messageBag
+    );
   }
 
   protected parseRules(): void {
@@ -127,7 +136,7 @@ class Validator {
     type,
     rules,
     of,
-    shape
+    shape,
   }: ParsedTypeRule): SchemaTypeAdaptor<any> {
     let adaptor: SchemaTypeAdaptor<any>;
 

@@ -1,13 +1,14 @@
-import { Schema } from 'rsuite';
-import { ArrayType } from 'rsuite/lib/Schema/ArrayType';
-import _uniqBy from 'lodash.uniqby';
-import BaseTypeAdaptor from './BaseTypeAdaptor';
-import { SchemaTypeAdaptor, SchemaTypeArrayAdaptor } from '../types';
-import { CheckType } from 'rsuite/lib/Schema';
+import { Schema } from "rsuite";
+import { ArrayType } from "rsuite/lib/Schema/ArrayType";
+import _uniqBy from "lodash.uniqby";
+import BaseTypeAdaptor from "./BaseTypeAdaptor";
+import { SchemaTypeAdaptor, SchemaTypeArrayAdaptor } from "../types";
+import { CheckType } from "rsuite/lib/Schema";
 
-class ArrayTypeAdaptor<T extends CheckType = any> extends BaseTypeAdaptor<ArrayType> implements SchemaTypeArrayAdaptor<T> {
-
-  protected $type = 'array';
+class ArrayTypeAdaptor<T extends CheckType = any>
+  extends BaseTypeAdaptor<ArrayType>
+  implements SchemaTypeArrayAdaptor<T> {
+  protected $type = "array";
 
   protected $itemAdaptor?: SchemaTypeAdaptor<T>;
 
@@ -20,7 +21,7 @@ class ArrayTypeAdaptor<T extends CheckType = any> extends BaseTypeAdaptor<ArrayT
     adaptor.setArrayAdaptor(this);
     this.getSchemaType().of(
       adaptor.getSchemaType(),
-      '' // fixme
+      "" // fixme
     );
   }
 
@@ -30,36 +31,40 @@ class ArrayTypeAdaptor<T extends CheckType = any> extends BaseTypeAdaptor<ArrayT
 
   // ArrayType() native methods
   between(min: number, max: number): this {
-    this.getSchemaType().rangeLength(min, max, this.getErrorMessage('between', { min, max }));
+    this.getSchemaType().rangeLength(
+      min,
+      max,
+      this.getErrorMessage("between", { min, max })
+    );
 
     return this;
   }
 
   min(value: number): this {
-
-    this.getSchemaType().minLength(value, this.getErrorMessage('min', { value }));
+    this.getSchemaType().minLength(
+      value,
+      this.getErrorMessage("min", { value })
+    );
 
     return this;
   }
 
   max(value: number): this {
-
-    this.getSchemaType().maxLength(value, this.getErrorMessage('max', { value }));
+    this.getSchemaType().maxLength(
+      value,
+      this.getErrorMessage("max", { value })
+    );
 
     return this;
   }
 
-
   unique(by?: string): this {
-
     if (!by) {
-      this.getSchemaType().unrepeatable(
-        this.getErrorMessage('unique')
-      );
+      this.getSchemaType().unrepeatable(this.getErrorMessage("unique"));
     } else {
-      this.getSchemaType().addRule(array => {
+      this.getSchemaType().addRule((array) => {
         return array.length === _uniqBy(array, by).length;
-      }, this.getErrorMessage('unique', { by }));
+      }, this.getErrorMessage("unique", { by }));
     }
 
     return this;

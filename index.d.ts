@@ -41,7 +41,6 @@ declare interface ValidatorStatic {
 }
 
 declare interface ValidatorInstance {
-
   getSchemaModel(): Schema;
 
   check(data: any): CheckResult;
