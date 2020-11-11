@@ -163,6 +163,66 @@ abstract class BaseTypeAdaptor<T extends CheckType>
     return this;
   }
 
+  gt(field: string): this {
+    this.getSchemaType().addRule((value, data) => {
+      const otherSize = this.getSize!(data[field]);
+      return {
+        hasError: !(this.getSize!(value) > otherSize),
+        errorMessage: this.getErrorMessage("gt", {
+          other: field,
+          value: otherSize,
+        }),
+      };
+    }, "");
+
+    return this;
+  }
+
+  gte(field: string): this {
+    this.getSchemaType().addRule((value, data) => {
+      const otherSize = this.getSize!(data[field]);
+      return {
+        hasError: !(this.getSize!(value) >= otherSize),
+        errorMessage: this.getErrorMessage("gte", {
+          other: field,
+          value: otherSize,
+        }),
+      };
+    }, "");
+
+    return this;
+  }
+
+  lt(field: string): this {
+    this.getSchemaType().addRule((value, data) => {
+      const otherSize = this.getSize!(data[field]);
+      return {
+        hasError: !(this.getSize!(value) < otherSize),
+        errorMessage: this.getErrorMessage("lt", {
+          other: field,
+          value: otherSize,
+        }),
+      };
+    }, "");
+
+    return this;
+  }
+
+  lte(field: string): this {
+    this.getSchemaType().addRule((value, data) => {
+      const otherSize = this.getSize!(data[field]);
+      return {
+        hasError: !(this.getSize!(value) <= otherSize),
+        errorMessage: this.getErrorMessage("lte", {
+          other: field,
+          value: otherSize,
+        }),
+      };
+    }, "");
+
+    return this;
+  }
+
   same(field: string): this {
     this.getSchemaType().addRule((value, data) => {
       return value === data[field];

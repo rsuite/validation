@@ -210,22 +210,26 @@ Each rule has different placeholders available, while `{field}` is available acr
 Most placeholders have the same name as the rule signature.
 Here is a full list of built-in rules that have placeholders in messages.
 
-| Rule signature           | Placeholders     |
-| ------------------------ | ---------------- |
-| `size:value`             | `{value}`        |
-| `max:value`              | `{value}`        |
-| `min:value`              | `{value}`        |
-| `between:min,max`        | `{min}`, `{max}` |
-| `same:other`             | `{other}`        |
-| `different:other`        | `{other}`        |
-| `in:value1,value2...`    | `{values}`       |
-| `notIn:value1,value2...` | `{values}`       |
-| `unique:by?`             | `{by}`           |
-| `regex:pattern`          | `{pattern}`      |
-| `after:date`             | `{date}`         |
-| `afterOrEqual:date`      | `{date}`         |
-| `before:date`            | `{date}`         |
-| `beforeOrEqual:date`     | `{date}`         |
+| Rule signature           | Placeholders         |
+| ------------------------ | -------------------- |
+| `size:value`             | `{value}`            |
+| `max:value`              | `{value}`            |
+| `min:value`              | `{value}`            |
+| `between:min,max`        | `{min}`, `{max}`     |
+| `gt:other`               | `{other}`, `{value}` |
+| `gte:other`              | `{other}`, `{value}` |
+| `lt:other`               | `{other}`, `{value}` |
+| `lte:other`              | `{other}`, `{value}` |
+| `same:other`             | `{other}`            |
+| `different:other`        | `{other}`            |
+| `in:value1,value2...`    | `{values}`           |
+| `notIn:value1,value2...` | `{values}`           |
+| `unique:by?`             | `{by}`               |
+| `regex:pattern`          | `{pattern}`          |
+| `after:date`             | `{date}`             |
+| `afterOrEqual:date`      | `{date}`             |
+| `before:date`            | `{date}`             |
+| `beforeOrEqual:date`     | `{date}`             |
 
 If you use `ErrorMessageFormatter`, placeholders values are passed in as an object to its second argument.
 
@@ -290,6 +294,22 @@ Some rules are effective among all these types, some are only effective under sp
 - `different:other` for all types
 
   The field under validation must have the different value from `other` field.
+
+- `lt:other` for `string`, `number`, `array`
+
+  The field under validation must have a 'size' less than the `other` field. See `size` rule for more about 'size'.
+
+- `lte:other` for `string`, `number`, `array`
+
+  The field under validation must have a 'size' less than or equal the `other` field. See `size` rule for more about 'size'.
+
+- `gt:other` for `string`, `number`, `array`
+
+  The field under validation must have a 'size' greater than the `other` field. See `size` rule for more about 'size'.
+
+- `gte:other` for `string`, `number`, `array`
+
+  The field under validation must have a 'size' greater than or equal the `other` field. See `size` rule for more about 'size'.
 
 - `in:value1,value2...` for `string`, `number`
 

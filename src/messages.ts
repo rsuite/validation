@@ -39,6 +39,30 @@ const messages: MessageBag = {
     array: "The {field} must have between {min} and {max} items.",
   },
 
+  gt: {
+    number: "The {field} must be greater than {value}.",
+    string: "The {field} must be greater than {value} characters.",
+    array: "The {field} must have more than {value} items.",
+  },
+
+  gte: {
+    number: "The {field} must be greater than or equal {value}.",
+    string: "The {field} must be greater than or equal {value} characters.",
+    array: "The {field} must have {value} items or more.",
+  },
+
+  lt: {
+    number: "The {field} must be less than {value}.",
+    string: "The {field} must be less than {value} characters.",
+    array: "The {field} must have less than {value} items.",
+  },
+ 
+  lte: {
+    number: "The {field} must be less than or equal {value}.",
+    string: "The {field} must be less than or equal {value} characters.",
+    array: "The {field} must not have more than {value} items.",
+  },
+
   same: "The {field} and {other} must match.",
 
   different: "The {field} and {other} must be different.",

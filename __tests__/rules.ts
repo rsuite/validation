@@ -380,6 +380,350 @@ describe("between:min,max", () => {
   });
 });
 
+describe("gt:other", () => {
+  test("Should fail if string length is smaller than or equal to {other}'s", () => {
+    const result: any = Validator.check(
+      {
+        exact: "abcde",
+        shorter: "abcd",
+        same: "abcde",
+        longer: "abcdef",
+      },
+      {
+        shorter: "gt:exact",
+        same: "gt:exact",
+        longer: "gt:exact",
+      }
+    );
+
+    ["shorter", "same"].forEach((field) => {
+      expect(result[field]).toEqual({
+        hasError: true,
+        errorMessage: `The ${field} must be greater than 5 characters.`,
+      });
+    });
+
+    expect(result.longer).toEqual({
+      hasError: false,
+    });
+  });
+
+  test("Should fail if number is smaller than or equal to {other}", () => {
+    const result: any = Validator.check(
+      {
+        exact: 5,
+        smaller: 4,
+        same: 5,
+        larger: 6,
+      },
+      {
+        smaller: "number|gt:exact",
+        same: "number|gt:exact",
+        larger: "number|gt:exact",
+      }
+    );
+
+    ["smaller", "same"].forEach((field) => {
+      expect(result[field]).toEqual({
+        hasError: true,
+        errorMessage: `The ${field} must be greater than 5.`,
+      });
+    });
+
+    expect(result.larger).toEqual({
+      hasError: false,
+    });
+  });
+
+  test("Should fail if array length is smaller than or equal to {other}'s", () => {
+    const result: any = Validator.check(
+      {
+        exact: [1, 2, 3, 4, 5],
+        shorter: [1, 2, 3, 4],
+        same: [1, 2, 3, 4, 5],
+        longer: [1, 2, 3, 4, 5, 6],
+      },
+      {
+        shorter: "array|gt:exact",
+        same: "array|gt:exact",
+        longer: "array|gt:exact",
+      }
+    );
+
+    ["shorter", "same"].forEach((field) => {
+      expect(result[field]).toEqual({
+        hasError: true,
+        errorMessage: `The ${field} must have more than 5 items.`,
+      });
+    });
+
+    expect(result.longer).toEqual({
+      hasError: false,
+    });
+  });
+});
+
+describe("gte:other", () => {
+  test("Should fail if string length is smaller than {other}'s", () => {
+    const result: any = Validator.check(
+      {
+        exact: "abcde",
+        shorter: "abcd",
+        same: "abcde",
+        longer: "abcdef",
+      },
+      {
+        shorter: "gte:exact",
+        same: "gte:exact",
+        longer: "gte:exact",
+      }
+    );
+
+    expect(result.shorter).toEqual({
+      hasError: true,
+      errorMessage: `The shorter must be greater than or equal 5 characters.`,
+    });
+
+    expect(result.same).toEqual({
+      hasError: false,
+    });
+
+    expect(result.longer).toEqual({
+      hasError: false,
+    });
+  });
+
+  test("Should fail if number is smaller than {other}", () => {
+    const result: any = Validator.check(
+      {
+        exact: 5,
+        smaller: 4,
+        same: 5,
+        larger: 6,
+      },
+      {
+        smaller: "number|gte:exact",
+        same: "number|gte:exact",
+        larger: "number|gte:exact",
+      }
+    );
+
+    expect(result.smaller).toEqual({
+      hasError: true,
+      errorMessage: `The smaller must be greater than or equal 5.`,
+    });
+
+    expect(result.same).toEqual({
+      hasError: false,
+    });
+
+    expect(result.larger).toEqual({
+      hasError: false,
+    });
+  });
+
+  test("Should fail if array length is smaller than {other}'s", () => {
+    const result: any = Validator.check(
+      {
+        exact: [1, 2, 3, 4, 5],
+        shorter: [1, 2, 3, 4],
+        same: [1, 2, 3, 4, 5],
+        longer: [1, 2, 3, 4, 5, 6],
+      },
+      {
+        shorter: "array|gte:exact",
+        same: "array|gte:exact",
+        longer: "array|gte:exact",
+      }
+    );
+
+    expect(result.shorter).toEqual({
+      hasError: true,
+      errorMessage: `The shorter must have 5 items or more.`,
+    });
+
+    expect(result.same).toEqual({
+      hasError: false,
+    });
+
+    expect(result.longer).toEqual({
+      hasError: false,
+    });
+  });
+});
+
+describe("lt:other", () => {
+  test("Should fail if string length is larger than or equal to {other}'s", () => {
+    const result: any = Validator.check(
+      {
+        exact: "abcde",
+        shorter: "abcd",
+        same: "abcde",
+        longer: "abcdef",
+      },
+      {
+        shorter: "lt:exact",
+        same: "lt:exact",
+        longer: "lt:exact",
+      }
+    );
+
+    ["same", "longer"].forEach((field) => {
+      expect(result[field]).toEqual({
+        hasError: true,
+        errorMessage: `The ${field} must be less than 5 characters.`,
+      });
+    });
+
+    expect(result.shorter).toEqual({
+      hasError: false,
+    });
+  });
+
+  test("Should fail if number is larger than or equal to {other}", () => {
+    const result: any = Validator.check(
+      {
+        exact: 5,
+        smaller: 4,
+        same: 5,
+        larger: 6,
+      },
+      {
+        smaller: "number|lt:exact",
+        same: "number|lt:exact",
+        larger: "number|lt:exact",
+      }
+    );
+
+    ["same", "larger"].forEach((field) => {
+      expect(result[field]).toEqual({
+        hasError: true,
+        errorMessage: `The ${field} must be less than 5.`,
+      });
+    });
+
+    expect(result.smaller).toEqual({
+      hasError: false,
+    });
+  });
+
+  test("Should fail if array length is larger than or equal to {other}'s", () => {
+    const result: any = Validator.check(
+      {
+        exact: [1, 2, 3, 4, 5],
+        shorter: [1, 2, 3, 4],
+        same: [1, 2, 3, 4, 5],
+        longer: [1, 2, 3, 4, 5, 6],
+      },
+      {
+        shorter: "array|lt:exact",
+        same: "array|lt:exact",
+        longer: "array|lt:exact",
+      }
+    );
+
+    ["same", "longer"].forEach((field) => {
+      expect(result[field]).toEqual({
+        hasError: true,
+        errorMessage: `The ${field} must have less than 5 items.`,
+      });
+    });
+
+    expect(result.shorter).toEqual({
+      hasError: false,
+    });
+  });
+});
+
+describe("lte:other", () => {
+  test("Should fail if string length is larger than {other}'s", () => {
+    const result: any = Validator.check(
+      {
+        exact: "abcde",
+        shorter: "abcd",
+        same: "abcde",
+        longer: "abcdef",
+      },
+      {
+        shorter: "lte:exact",
+        same: "lte:exact",
+        longer: "lte:exact",
+      }
+    );
+
+    expect(result.shorter).toEqual({
+      hasError: false,
+    });
+
+    expect(result.same).toEqual({
+      hasError: false,
+    });
+
+    expect(result.longer).toEqual({
+      hasError: true,
+      errorMessage: `The longer must be less than or equal 5 characters.`,
+    });
+  });
+
+  test("Should fail if number is larger than {other}", () => {
+    const result: any = Validator.check(
+      {
+        exact: 5,
+        smaller: 4,
+        same: 5,
+        larger: 6,
+      },
+      {
+        smaller: "number|lte:exact",
+        same: "number|lte:exact",
+        larger: "number|lte:exact",
+      }
+    );
+
+    expect(result.smaller).toEqual({
+      hasError: false,
+    });
+
+    expect(result.same).toEqual({
+      hasError: false,
+    });
+
+    expect(result.larger).toEqual({
+      hasError: true,
+      errorMessage: `The larger must be less than or equal 5.`,
+    });
+  });
+
+  test("Should fail if array length is larger than {other}'s", () => {
+    const result: any = Validator.check(
+      {
+        exact: [1, 2, 3, 4, 5],
+        shorter: [1, 2, 3, 4],
+        same: [1, 2, 3, 4, 5],
+        longer: [1, 2, 3, 4, 5, 6],
+      },
+      {
+        shorter: "array|lte:exact",
+        same: "array|lte:exact",
+        longer: "array|lte:exact",
+      }
+    );
+
+    expect(result.shorter).toEqual({
+      hasError: false,
+    });
+
+    expect(result.same).toEqual({
+      hasError: false,
+    });
+
+    expect(result.longer).toEqual({
+      hasError: true,
+      errorMessage: `The longer must not have more than 5 items.`,
+    });
+  });
+});
+
 describe.skip("same:other", () => {
   test("to be done", () => {
     // todo
