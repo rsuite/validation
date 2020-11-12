@@ -1,6 +1,15 @@
 import { CheckType } from "rsuite/lib/Schema";
 import { ArrayType } from "rsuite/lib/Schema/ArrayType";
 
+export type SchemaCheckResult<S = any, M = string> = {
+  [K in keyof S]?: CheckResult<M>;
+};
+
+export interface CheckResult<M = string> {
+  hasError: boolean;
+  errorMessage: M;
+}
+
 export type ErrorMessageFormatter =
   | string
   | ((field: string, placeholderValues?: { [key: string]: any }) => string);

@@ -3,7 +3,7 @@ import { Validator } from "../../src";
 describe("before:date", () => {
   test("Should fail if value is later than date", () => {
     // fixme incorrect return type of check()
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         startDate: new Date("08/01/2017"),
       },
@@ -20,7 +20,7 @@ describe("before:date", () => {
   });
 
   test("{date} placeholder", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         startDate: new Date("08/01/2017"),
       },
@@ -43,7 +43,7 @@ describe("before:date", () => {
 describe("beforeOrEqual:date", () => {
   test("Should fail if value is later than or equal to date", () => {
     // fixme incorrect return type of check()
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         startDate: new Date("08/01/2017"),
       },
@@ -60,7 +60,7 @@ describe("beforeOrEqual:date", () => {
   });
 
   test("{date} placeholder", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         startDate: new Date("08/01/2017"),
       },

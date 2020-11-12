@@ -1,12 +1,13 @@
 import { Schema } from "rsuite";
 import { CheckType } from "rsuite/lib/Schema";
 import { ObjectType } from "rsuite/lib/Schema/ObjectType";
-import { CheckResult } from "rsuite/lib/Schema/Type";
 import {
   MessageBag,
   ParsedTypeRule,
   RulesInput,
   SchemaTypeAdaptor,
+  CheckResult,
+  SchemaCheckResult,
 } from "./types";
 import StringTypeAdaptor from "./adaptors/StringTypeAdaptor";
 import ArrayTypeAdaptor from "./adaptors/ArrayTypeAdaptor";
@@ -42,7 +43,7 @@ class Validator {
     data: any,
     rules: RulesInput,
     messages?: MessageBag
-  ): CheckResult {
+  ): SchemaCheckResult {
     return this.make(rules, messages).check(data);
   }
 
@@ -92,8 +93,9 @@ class Validator {
     this.makeSchemaModel();
   }
 
-  check(data: any): CheckResult<string> {
-    return this.getSchemaModel().check(data);
+  check(data: any): SchemaCheckResult {
+    // fixme use types from schema-typed directly in future updates
+    return this.getSchemaModel().check(data) as any;
   }
 
   getRawRules(): RulesInput {

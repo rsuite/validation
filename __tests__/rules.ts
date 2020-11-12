@@ -2,7 +2,7 @@ import { Validator } from "../src";
 
 describe("required", () => {
   test("Should fail if value is not present or has a non-null value.", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         present: "and non-null",
         nullish: null,
@@ -32,7 +32,7 @@ describe("required", () => {
 
 describe("size:value", () => {
   test("Should fail if string length does not match", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         match: "abcde",
         shorter: "abcd",
@@ -61,7 +61,7 @@ describe("size:value", () => {
   });
 
   test("Should fail if number value does not match", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         match: 5,
         smaller: 4,
@@ -90,7 +90,7 @@ describe("size:value", () => {
   });
 
   test("Should fail if array length does not match", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         match: [1, 2, 3, 4, 5],
         shorter: [1, 2, 3, 4],
@@ -121,7 +121,7 @@ describe("size:value", () => {
 
 describe("max:value", () => {
   test("Should fail if string length is larger than {value}", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         exact: "abcde",
         shorter: "abcd",
@@ -149,7 +149,7 @@ describe("max:value", () => {
   });
 
   test("Should fail if number is larger than {value}", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         exact: 5,
         smaller: 4,
@@ -177,7 +177,7 @@ describe("max:value", () => {
   });
 
   test("Should fail if array length is larger than {value}", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         exact: [1, 2, 3, 4, 5],
         shorter: [1, 2, 3, 4],
@@ -207,7 +207,7 @@ describe("max:value", () => {
 
 describe("min:value", () => {
   test("Should fail if string length is smaller than {value}", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         exact: "abcde",
         shorter: "abcd",
@@ -235,7 +235,7 @@ describe("min:value", () => {
   });
 
   test("Should fail if number is smaller than {value}", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         exact: 5,
         smaller: 4,
@@ -263,7 +263,7 @@ describe("min:value", () => {
   });
 
   test("Should fail if array length is smaller than {value}", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         exact: [1, 2, 3, 4, 5],
         shorter: [1, 2, 3, 4],
@@ -293,7 +293,7 @@ describe("min:value", () => {
 
 describe("between:min,max", () => {
   test("Should fail if string length is out of range {min}-{max}", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         exact: "abcde",
         shorter: "abc",
@@ -322,7 +322,7 @@ describe("between:min,max", () => {
   });
 
   test("Should fail if number is out of range {min}-{max}", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         exact: 5,
         smaller: 3,
@@ -351,7 +351,7 @@ describe("between:min,max", () => {
   });
 
   test("Should fail if array length is out of range {min}-{max}", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         exact: [1, 2, 3, 4, 5],
         shorter: [1, 2, 3],
@@ -382,7 +382,7 @@ describe("between:min,max", () => {
 
 describe("gt:other", () => {
   test("Should fail if string length is smaller than or equal to {other}'s", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         exact: "abcde",
         shorter: "abcd",
@@ -409,7 +409,7 @@ describe("gt:other", () => {
   });
 
   test("Should fail if number is smaller than or equal to {other}", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         exact: 5,
         smaller: 4,
@@ -436,7 +436,7 @@ describe("gt:other", () => {
   });
 
   test("Should fail if array length is smaller than or equal to {other}'s", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         exact: [1, 2, 3, 4, 5],
         shorter: [1, 2, 3, 4],
@@ -465,7 +465,7 @@ describe("gt:other", () => {
 
 describe("gte:other", () => {
   test("Should fail if string length is smaller than {other}'s", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         exact: "abcde",
         shorter: "abcd",
@@ -494,7 +494,7 @@ describe("gte:other", () => {
   });
 
   test("Should fail if number is smaller than {other}", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         exact: 5,
         smaller: 4,
@@ -523,7 +523,7 @@ describe("gte:other", () => {
   });
 
   test("Should fail if array length is smaller than {other}'s", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         exact: [1, 2, 3, 4, 5],
         shorter: [1, 2, 3, 4],
@@ -554,7 +554,7 @@ describe("gte:other", () => {
 
 describe("lt:other", () => {
   test("Should fail if string length is larger than or equal to {other}'s", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         exact: "abcde",
         shorter: "abcd",
@@ -581,7 +581,7 @@ describe("lt:other", () => {
   });
 
   test("Should fail if number is larger than or equal to {other}", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         exact: 5,
         smaller: 4,
@@ -608,7 +608,7 @@ describe("lt:other", () => {
   });
 
   test("Should fail if array length is larger than or equal to {other}'s", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         exact: [1, 2, 3, 4, 5],
         shorter: [1, 2, 3, 4],
@@ -637,7 +637,7 @@ describe("lt:other", () => {
 
 describe("lte:other", () => {
   test("Should fail if string length is larger than {other}'s", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         exact: "abcde",
         shorter: "abcd",
@@ -666,7 +666,7 @@ describe("lte:other", () => {
   });
 
   test("Should fail if number is larger than {other}", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         exact: 5,
         smaller: 4,
@@ -695,7 +695,7 @@ describe("lte:other", () => {
   });
 
   test("Should fail if array length is larger than {other}'s", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         exact: [1, 2, 3, 4, 5],
         shorter: [1, 2, 3, 4],
@@ -738,7 +738,7 @@ describe.skip("different:other", () => {
 
 describe("in:value1,value2...", () => {
   test("Should fail if value is not included in given list", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         included: "A",
         excluded: "E",
@@ -761,7 +761,7 @@ describe("in:value1,value2...", () => {
 
 describe("notIn:value1,value2...", () => {
   test("Should fail if value is included in given list", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         included: "A",
         excluded: "E",
@@ -784,7 +784,7 @@ describe("notIn:value1,value2...", () => {
 
 describe("email", () => {
   test("Should fail if value is not formatted as an e-mail address", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         email: "john@example.com",
         string: "any other string",
@@ -806,7 +806,7 @@ describe("email", () => {
 
 describe("url", () => {
   test("Should fail if value is not a valid URL", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         url: "https://google.com",
         string: "any other string",
@@ -828,7 +828,7 @@ describe("url", () => {
 
 describe("unique:by?", () => {
   test("Should fail if array contains duplicated items", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         distinct: [1, 2, 3, 4, 5],
         duplicated: [1, 2, 3, 4, 5, 5],
@@ -847,7 +847,7 @@ describe("unique:by?", () => {
     });
   });
   test("Should fail if array contains duplicated items by property", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         distinct: [{ id: 1 }, { id: 2 }],
         duplicatedById: [
@@ -880,7 +880,7 @@ describe("unique:by?", () => {
 
 describe("integer", () => {
   test("Should fail if value is not integer", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         integer: 1,
         float: 1.2,

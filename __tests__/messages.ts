@@ -2,7 +2,7 @@ import { Validator } from "../src";
 
 describe("Custom error messages", () => {
   test("Should render custom rule messages", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         name: 1,
       },
@@ -21,7 +21,7 @@ describe("Custom error messages", () => {
   });
 
   test("Should render custom rule messages for specific fields", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         name: 1,
         id: 1,
@@ -45,7 +45,7 @@ describe("Custom error messages", () => {
   });
 
   test("Should render custom field names", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         name: 1,
       },
@@ -66,7 +66,7 @@ describe("Custom error messages", () => {
   });
 
   test("Should render custom messages with custom field names", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         name: 1,
       },
@@ -88,7 +88,7 @@ describe("Custom error messages", () => {
   });
 
   test("Should render custom rule messages with custom field names for specific fields", () => {
-    const result: any = Validator.check(
+    const result = Validator.check(
       {
         name: 1,
         id: 1,
