@@ -900,3 +900,109 @@ describe("integer", () => {
     });
   });
 });
+
+describe.only("endsWith", () => {
+  test("Should fail if value does not end with {values}", () => {
+    const result = Validator.check(
+      {
+        foo: "hello world",
+        bar: "hello world",
+        baz: "hello world",
+      },
+      {
+        foo: "endsWith:hello",
+        bar: "endsWith:world",
+        baz: "endsWith:world,hello",
+      }
+    );
+
+    expect(result.foo).toHaveProperty("hasError", true);
+    expect(result.bar).toHaveProperty("hasError", false);
+    expect(result.baz).toHaveProperty("hasError", false);
+  });
+
+  test("Renders message correctly", () => {
+    const result = Validator.check(
+      {
+        url: "rsuitejs.com",
+      },
+      {
+        url: "endsWith:http",
+      }
+    );
+
+    expect(result.url).toHaveProperty(
+      "errorMessage",
+      "The url must end with one of the following: http."
+    );
+  });
+
+  test("Renders message correctly with multiple values", () => {
+    const result = Validator.check(
+      {
+        url: "rsuitejs.com",
+      },
+      {
+        url: "endsWith:http,https",
+      }
+    );
+
+    expect(result.url).toHaveProperty(
+      "errorMessage",
+      "The url must end with one of the following: http,https."
+    );
+  });
+});
+
+describe.only("startsWith", () => {
+  test("Should fail if value does not end with {values}", () => {
+    const result = Validator.check(
+      {
+        foo: "hello world",
+        bar: "hello world",
+        baz: "hello world",
+      },
+      {
+        foo: "startsWith:hello",
+        bar: "startsWith:world",
+        baz: "startsWith:world,hello",
+      }
+    );
+
+    expect(result.foo).toHaveProperty("hasError", false);
+    expect(result.bar).toHaveProperty("hasError", true);
+    expect(result.baz).toHaveProperty("hasError", false);
+  });
+
+  test("Renders message correctly", () => {
+    const result = Validator.check(
+      {
+        url: "rsuitejs.com",
+      },
+      {
+        url: "startsWith:http",
+      }
+    );
+
+    expect(result.url).toHaveProperty(
+      "errorMessage",
+      "The url must start with one of the following: http."
+    );
+  });
+
+  test("Renders message correctly with multiple values", () => {
+    const result = Validator.check(
+      {
+        url: "rsuitejs.com",
+      },
+      {
+        url: "startsWith:http,https",
+      }
+    );
+
+    expect(result.url).toHaveProperty(
+      "errorMessage",
+      "The url must start with one of the following: http,https."
+    );
+  });
+});

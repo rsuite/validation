@@ -56,7 +56,7 @@ const messages: MessageBag = {
     string: "The {field} must be less than {value} characters.",
     array: "The {field} must have less than {value} items.",
   },
- 
+
   lte: {
     number: "The {field} must be less than or equal {value}.",
     string: "The {field} must be less than or equal {value} characters.",
@@ -88,6 +88,10 @@ const messages: MessageBag = {
   before: "The {field} must be a date before {date}.",
 
   beforeOrEqual: "The {field} must be a date before or equal to {date}.",
+
+  endsWith: "The {field} must end with one of the following: {values}.",
+
+  startsWith: "The {field} must start with one of the following: {values}.",
 };
 
 export default messages;

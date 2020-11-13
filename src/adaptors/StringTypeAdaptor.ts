@@ -67,6 +67,24 @@ class StringTypeAdaptor extends BaseTypeAdaptor<StringType> {
 
     return this;
   }
+
+  endsWith(...values: string[]): this {
+    this.getSchemaType().addRule(
+      (value: string) => values.some((v) => value.endsWith(v)),
+      this.getErrorMessage("endsWith", { values })
+    );
+
+    return this;
+  }
+
+  startsWith(...values: string[]): this {
+    this.getSchemaType().addRule(
+      (value: string) => values.some((v) => value.startsWith(v)),
+      this.getErrorMessage("startsWith", { values })
+    );
+
+    return this;
+  }
 }
 
 export default StringTypeAdaptor;
