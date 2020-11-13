@@ -210,26 +210,28 @@ Each rule has different placeholders available, while `{field}` is available acr
 Most placeholders have the same name as the rule signature.
 Here is a full list of built-in rules that have placeholders in messages.
 
-| Rule signature           | Placeholders         |
-| ------------------------ | -------------------- |
-| `size:value`             | `{value}`            |
-| `max:value`              | `{value}`            |
-| `min:value`              | `{value}`            |
-| `between:min,max`        | `{min}`, `{max}`     |
-| `gt:other`               | `{other}`, `{value}` |
-| `gte:other`              | `{other}`, `{value}` |
-| `lt:other`               | `{other}`, `{value}` |
-| `lte:other`              | `{other}`, `{value}` |
-| `same:other`             | `{other}`            |
-| `different:other`        | `{other}`            |
-| `in:value1,value2...`    | `{values}`           |
-| `notIn:value1,value2...` | `{values}`           |
-| `unique:by?`             | `{by}`               |
-| `regex:pattern`          | `{pattern}`          |
-| `after:date`             | `{date}`             |
-| `afterOrEqual:date`      | `{date}`             |
-| `before:date`            | `{date}`             |
-| `beforeOrEqual:date`     | `{date}`             |
+| Rule signature                | Placeholders         |
+| ----------------------------- | -------------------- |
+| `size:value`                  | `{value}`            |
+| `max:value`                   | `{value}`            |
+| `min:value`                   | `{value}`            |
+| `between:min,max`             | `{min}`, `{max}`     |
+| `gt:other`                    | `{other}`, `{value}` |
+| `gte:other`                   | `{other}`, `{value}` |
+| `lt:other`                    | `{other}`, `{value}` |
+| `lte:other`                   | `{other}`, `{value}` |
+| `same:other`                  | `{other}`            |
+| `different:other`             | `{other}`            |
+| `in:value1,value2...`         | `{values}`           |
+| `notIn:value1,value2...`      | `{values}`           |
+| `unique:by?`                  | `{by}`               |
+| `regex:pattern`               | `{pattern}`          |
+| `after:date`                  | `{date}`             |
+| `afterOrEqual:date`           | `{date}`             |
+| `before:date`                 | `{date}`             |
+| `beforeOrEqual:date`          | `{date}`             |
+| `endsWith:value1,value2...`   | `{values}`           |
+| `startsWith:value1,value2...` | `{values}`           |
 
 If you use `ErrorMessageFormatter`, placeholders values are passed in as an object to its second argument.
 
@@ -357,6 +359,14 @@ Some rules are effective among all these types, some are only effective under sp
 - `beforeOrEqual:date` for `date`
 
   The field under validation must be a value preceding or equal to the given date. The dates will be passed into `new Date(date)`.
+
+- `endsWith:value1,value2...` for `string`
+
+  The field under validation must end with one of the given values.
+
+- `startsWith:value1,value2...` for `string`
+
+  The field under validation must start with one of the given values.
 
 ## Custom validation rules
 
