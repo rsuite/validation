@@ -901,7 +901,7 @@ describe("integer", () => {
   });
 });
 
-describe.only("endsWith", () => {
+describe("endsWith", () => {
   test("Should fail if value does not end with {values}", () => {
     const result = Validator.check(
       {
@@ -954,7 +954,7 @@ describe.only("endsWith", () => {
   });
 });
 
-describe.only("startsWith", () => {
+describe("startsWith", () => {
   test("Should fail if value does not end with {values}", () => {
     const result = Validator.check(
       {
