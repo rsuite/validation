@@ -454,7 +454,7 @@ Those APIs that don't have an equivalent rule for now (marked as `-`) can still 
 | API               | Rule                 |
 | ----------------- | -------------------- |
 | `DateType()`      | `date`               |
-| `.range(min,max)` | `afterOrEqual:min    | beforeOrEqual:max` |
+| `.range(min,max)` | `afterOrEqual:min`  &#124; `beforeOrEqual:max` |
 | `.min(min)`       | `afterOrEqual:date`  |
 | `.max(max)`       | `beforeOrEqual:date` |
 
