@@ -1,4 +1,4 @@
-import { Schema } from "rsuite/lib/Schema/Schema";
+import { Schema } from 'schema-typed';
 import { CheckResult } from "rsuite/lib/Schema/Type";
 
 interface ErrorMessageFormatter {
