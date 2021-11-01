@@ -1,31 +1,30 @@
-import { Schema } from "rsuite";
-import { ArrayType } from "rsuite/lib/Schema/ArrayType";
 import _uniqBy from "lodash.uniqby";
 import BaseTypeAdaptor from "./BaseTypeAdaptor";
-import { SchemaTypeAdaptor, SchemaTypeArrayAdaptor } from "../types";
-import { CheckType } from "rsuite/lib/Schema";
+import {
+  SchemaTypeAdaptor,
+  SchemaTypeArrayAdaptor,
+  ArrayType,
+  Types,
+} from "../types";
 
-class ArrayTypeAdaptor<T extends CheckType = any>
-  extends BaseTypeAdaptor<ArrayType>
-  implements SchemaTypeArrayAdaptor<T> {
-  protected $type = "array";
+class ArrayTypeAdaptor<Type extends Types, T extends Record<string, unknown>>
+  extends BaseTypeAdaptor<ArrayType, T>
+  implements SchemaTypeArrayAdaptor<Type, T> {
+  protected $type = "array" as const;
 
-  protected $itemAdaptor?: SchemaTypeAdaptor<T>;
+  protected $itemAdaptor?: SchemaTypeAdaptor<Type, T>;
 
   protected getSize(array: any[]): number {
     return array.length;
   }
 
-  setItemAdaptor(adaptor: SchemaTypeAdaptor<T>): void {
+  setItemAdaptor(adaptor: SchemaTypeAdaptor<Type, T>): void {
     this.$itemAdaptor = adaptor;
     adaptor.setArrayAdaptor(this);
-    this.getSchemaType().of(
-      adaptor.getSchemaType(),
-      "" // fixme
-    );
+    this.getSchemaType().of(adaptor.getSchemaType());
   }
 
-  getItemAdaptor(): SchemaTypeAdaptor<T> | undefined {
+  getItemAdaptor(): SchemaTypeAdaptor<Type, T> | undefined {
     return this.$itemAdaptor;
   }
 

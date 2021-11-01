@@ -1,9 +1,10 @@
-import { Schema } from "rsuite";
-import { BooleanType } from "rsuite/lib/Schema/BooleanType";
+import { BooleanType } from "../types";
 import BaseTypeAdaptor from "./BaseTypeAdaptor";
 
-class BooleanTypeAdaptor extends BaseTypeAdaptor<BooleanType> {
-  protected $type = "boolean";
+class BooleanTypeAdaptor<
+  T extends Record<string, unknown>
+> extends BaseTypeAdaptor<BooleanType<T>, T> {
+  protected $type = "boolean" as const;
 }
 
 export default BooleanTypeAdaptor;

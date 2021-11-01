@@ -1,13 +1,17 @@
-import { Schema } from "rsuite";
-import { CheckType } from "rsuite/lib/Schema";
-import { ObjectType } from "rsuite/lib/Schema/ObjectType";
+import {
+  Schema,
+  CheckType,
+  SchemaModel,
+  SchemaCheckResult,
+  SchemaDeclaration,
+} from "schema-typed";
 import {
   MessageBag,
+  ObjectType,
   ParsedTypeRule,
   RulesInput,
   SchemaTypeAdaptor,
-  CheckResult,
-  SchemaCheckResult,
+  Types,
 } from "./types";
 import StringTypeAdaptor from "./adaptors/StringTypeAdaptor";
 import ArrayTypeAdaptor from "./adaptors/ArrayTypeAdaptor";
@@ -18,9 +22,7 @@ import BooleanTypeAdaptor from "./adaptors/BooleanTypeAdaptor";
 import DateTypeAdaptor from "./adaptors/DateTypeAdaptor";
 import defaultMessageBag from "./messages";
 
-type RSuiteSchemaModel = ReturnType<typeof Schema.Model>;
-
-class Validator {
+class Validator<Parsed extends Record<string, unknown>> {
   /**
    * 记录是否已经创建 Validator 实例，用于在设置语言包时给出警告
    */
@@ -28,23 +30,23 @@ class Validator {
 
   protected static $globalMessageBag = defaultMessageBag;
 
-  static make(rules: RulesInput, messages?: MessageBag): Validator {
+  static make<T extends Record<string, unknown>>(
+    rules: RulesInput,
+    messages?: MessageBag
+  ): Validator<T> {
     return new Validator(rules, messages);
   }
 
-  static SchemaModel(
-    rules: RulesInput,
-    messages?: MessageBag
-  ): RSuiteSchemaModel {
+  static SchemaModel(rules: RulesInput, messages?: MessageBag): Schema {
     return this.make(rules, messages).getSchemaModel();
   }
 
-  static check(
+  static check<T extends Record<string, unknown>>(
     data: any,
     rules: RulesInput,
     messages?: MessageBag
-  ): SchemaCheckResult {
-    return this.make(rules, messages).check(data);
+  ): SchemaCheckResult<T, string> {
+    return this.make<T>(rules, messages).check(data);
   }
 
   static messages(messages: MessageBag): void {
@@ -78,10 +80,10 @@ class Validator {
   protected $rawRules: RulesInput;
 
   protected $parsedRules!: {
-    [field: string]: ParsedTypeRule;
+    [P in keyof Parsed]: ParsedTypeRule;
   };
 
-  protected $schemaModel!: RSuiteSchemaModel;
+  protected $schemaModel!: Schema;
 
   protected $messageBag?: MessageBag;
 
@@ -93,7 +95,7 @@ class Validator {
     this.makeSchemaModel();
   }
 
-  check(data: any): SchemaCheckResult {
+  check(data: any): SchemaCheckResult<Parsed, string> {
     // fixme use types from schema-typed directly in future updates
     return this.getSchemaModel().check(data) as any;
   }
@@ -102,7 +104,7 @@ class Validator {
     return this.$rawRules;
   }
 
-  getParsedRules(): { [field: string]: ParsedTypeRule } {
+  getParsedRules(): { [P in keyof Parsed]: ParsedTypeRule } {
     return this.$parsedRules;
   }
 
@@ -117,30 +119,26 @@ class Validator {
     this.$parsedRules = RulesParser.parse(this.getRawRules());
   }
 
-  protected makeSchemaModelSchema(): { [field: string]: CheckType } {
+  protected makeSchemaModelSchema(): SchemaDeclaration<Parsed, string> {
     return this.parsedTypeRuleMap(this.getParsedRules());
   }
 
   protected parsedTypeRuleMap(input: {
     [path: string]: ParsedTypeRule;
-  }): { [field: string]: CheckType } {
-    return Object.keys(input).reduce<{ [field: string]: CheckType }>(
-      (acc, field) => {
-        acc[field] = this.newAdaptorForRule(input[field]).getSchemaType();
-        return acc;
-      },
-      {}
-    );
+  }): SchemaDeclaration<Parsed, string> {
+    return Object.keys(input).reduce((acc, field: keyof Parsed) => {
+      acc[field] = this.newAdaptorForRule(input[field]).getSchemaType();
+      return acc;
+    }, {} as SchemaDeclaration<Parsed, string>);
   }
 
   protected newAdaptorForRule({
     path: fieldName,
     type,
     rules,
-    of,
-    shape,
-  }: ParsedTypeRule): SchemaTypeAdaptor<any> {
-    let adaptor: SchemaTypeAdaptor<any>;
+    ...rule
+  }: ParsedTypeRule): SchemaTypeAdaptor<any, any> {
+    let adaptor: SchemaTypeAdaptor<any, any>;
 
     switch (type) {
       case "number":
@@ -148,17 +146,17 @@ class Validator {
         break;
       case "array":
         adaptor = new ArrayTypeAdaptor(fieldName, this);
-        if (of) {
-          (adaptor as ArrayTypeAdaptor).setItemAdaptor(
-            this.newAdaptorForRule(of)
+        if ("of" in rule) {
+          (adaptor as ArrayTypeAdaptor<any, any>).setItemAdaptor(
+            this.newAdaptorForRule(rule.of!)
           );
         }
         break;
       case "object":
         adaptor = new ObjectTypeAdaptor(fieldName, this);
-        if (shape) {
+        if ("shape" in rule) {
           (adaptor.getSchemaType() as ObjectType).shape(
-            this.parsedTypeRuleMap(shape)
+            this.parsedTypeRuleMap(rule.shape!)
           );
         }
         break;
@@ -178,10 +176,10 @@ class Validator {
   }
 
   protected makeSchemaModel(): void {
-    this.$schemaModel = Schema.Model(this.makeSchemaModelSchema());
+    this.$schemaModel = SchemaModel(this.makeSchemaModelSchema());
   }
 
-  getSchemaModel(): RSuiteSchemaModel {
+  getSchemaModel(): Schema {
     return this.$schemaModel;
   }
 }

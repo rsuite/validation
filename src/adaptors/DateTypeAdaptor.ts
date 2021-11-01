@@ -1,9 +1,10 @@
-import { Schema } from "rsuite";
-import { DateType } from "rsuite/lib/Schema/DateType";
+import { DateType } from "../types";
 import BaseTypeAdaptor from "./BaseTypeAdaptor";
 
-class DateTypeAdaptor extends BaseTypeAdaptor<DateType> {
-  protected $type = "date";
+class DateTypeAdaptor<
+  T extends Record<string, unknown>
+> extends BaseTypeAdaptor<DateType, T> {
+  protected $type = "date" as const;
 
   after(date: string): this {
     this.getSchemaType().addRule(

@@ -1,9 +1,10 @@
-import { Schema } from "rsuite";
-import { StringType } from "rsuite/lib/Schema/StringType";
+import { StringType } from "../types";
 import BaseTypeAdaptor from "./BaseTypeAdaptor";
 
-class StringTypeAdaptor extends BaseTypeAdaptor<StringType> {
-  protected $type = "string";
+class StringTypeAdaptor<
+  T extends Record<string, unknown>
+> extends BaseTypeAdaptor<StringType<T>, T> {
+  protected $type = "string" as const;
 
   protected getSize(str: string): number {
     return str.length;

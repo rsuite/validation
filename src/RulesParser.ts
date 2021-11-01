@@ -1,5 +1,19 @@
-import { ParsedTypeRule, RulesInput, RuleType, TypeSlug } from "./types";
+import {
+  ParsedArrayRule,
+  ParsedObjectRule,
+  ParsedTypeRule,
+  RulesInput,
+  RuleType,
+  TypeSlug,
+} from "./types";
 
+function isArrayRule(rule: ParsedTypeRule): rule is ParsedArrayRule {
+  return rule.type === "array";
+}
+
+function isObjectRule(rule: ParsedTypeRule): rule is ParsedObjectRule {
+  return rule.type === "object";
+}
 /**
  * Parse input rule object
  */
@@ -17,7 +31,9 @@ class RulesParser {
     return this.$validTypeSlugs.includes(rule);
   }
 
-  parse(input: RulesInput): { [path: string]: ParsedTypeRule } {
+  parse<Parsed extends Record<string, unknown>>(
+    input: RulesInput
+  ): { [P in keyof Parsed]: ParsedTypeRule } {
     const rawMap = Object.keys(input).reduce<{
       [path: string]: ParsedTypeRule;
     }>((acc, path) => {
@@ -40,10 +56,10 @@ class RulesParser {
 
     return Object.keys(rawMap)
       .filter((path) => !/[^\\]\./.test(path))
-      .reduce<{ [path: string]: ParsedTypeRule }>((acc, path) => {
-        acc[path.replace(/\\\./g, ".")] = rawMap[path];
+      .reduce((acc, path) => {
+        acc[path.replace(/\\\./g, ".") as keyof Parsed] = rawMap[path];
         return acc;
-      }, {});
+      }, {} as { [P in keyof Parsed]: ParsedTypeRule });
   }
 
   protected getRulesFromExpression(
@@ -78,14 +94,15 @@ class RulesParser {
           rawMap[parentPath].type = "object";
         }
       }
-      if (rawMap[parentPath].type === "array") {
-        rawMap[parentPath].of = rawMap[path];
+      const rule = rawMap[parentPath];
+      if (isArrayRule(rule)) {
+        rule.of = rawMap[path];
       }
-      if (rawMap[parentPath].type === "object") {
-        if (!rawMap[parentPath].shape) {
-          rawMap[parentPath].shape = {};
+      if (isObjectRule(rule)) {
+        if (!rule.shape) {
+          rule.shape = {};
         }
-        (rawMap[parentPath].shape as { [field: string]: ParsedTypeRule })[
+        (rule.shape as { [field: string]: ParsedTypeRule })[
           path.substr(parentPath.length + 1).replace(/\\\./g, ".")
         ] = rawMap[path];
       }

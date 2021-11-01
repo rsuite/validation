@@ -1,5 +1,35 @@
-import { CheckType } from "rsuite/lib/Schema";
-import { ArrayType } from "rsuite/lib/Schema/ArrayType";
+import { ArrayType } from "schema-typed/lib/ArrayType";
+import { BooleanType } from "schema-typed/lib/BooleanType";
+import { DateType } from "schema-typed/lib/DateType";
+import { NumberType } from "schema-typed/lib/NumberType";
+import { ObjectType } from "schema-typed/lib/ObjectType";
+import { StringType } from "schema-typed/lib/StringType";
+
+export type {
+  ArrayType,
+  BooleanType,
+  DateType,
+  NumberType,
+  ObjectType,
+  StringType,
+};
+
+export type Types =
+  | ArrayType
+  | BooleanType
+  | DateType
+  | NumberType
+  | ObjectType
+  | StringType;
+
+export type TypesMap = {
+  string: StringType;
+  number: NumberType;
+  boolean: BooleanType;
+  date: DateType;
+  array: ArrayType;
+  object: ObjectType;
+};
 
 export type SchemaCheckResult<S = any, M = string> = {
   [K in keyof S]?: CheckResult<M>;
@@ -28,43 +58,55 @@ export type MessageBag = Messages & {
   };
 };
 
-export type TypeSlug =
-  | "string"
-  | "number"
-  | "boolean"
-  | "date"
-  | "array"
-  | "object";
+export type TypeSlug = keyof TypesMap;
 
-export interface ParsedTypeRule {
+export interface ParsedScalarRule {
   path: string;
   type: TypeSlug | undefined;
   rules: RuleType[];
+}
+
+export interface ParsedArrayRule extends ParsedScalarRule {
+  type: "array";
   of?: ParsedTypeRule;
+}
+
+export interface ParsedObjectRule extends ParsedScalarRule {
+  type: "object";
   shape?: {
     [prop: string]: ParsedTypeRule;
   };
 }
 
-export interface SchemaTypeAdaptor<T extends CheckType> {
-  getType(): string;
+export type ParsedTypeRule =
+  | ParsedScalarRule
+  | ParsedArrayRule
+  | ParsedObjectRule;
 
-  getSchemaType(): T;
+export interface SchemaTypeAdaptor<
+  Type extends Types,
+  Schema = Record<string, unknown>
+> {
+  getType(): TypeSlug;
+
+  getSchemaType(): Type;
 
   getFieldName(): string;
 
   applyRules(rules: RuleType[]): this;
 
-  setArrayAdaptor(adaptor: SchemaTypeArrayAdaptor<T>): any;
+  setArrayAdaptor(adaptor: SchemaTypeArrayAdaptor<Type, Schema>): any;
 
-  getArrayAdaptor(): SchemaTypeArrayAdaptor<T> | undefined;
+  getArrayAdaptor(): SchemaTypeArrayAdaptor<Type, Schema> | undefined;
 }
 
-export interface SchemaTypeArrayAdaptor<T extends CheckType>
-  extends SchemaTypeAdaptor<ArrayType> {
-  setItemAdaptor(adaptor: SchemaTypeAdaptor<T>): any;
+export interface SchemaTypeArrayAdaptor<
+  Type extends Types,
+  Schema = Record<string, unknown>
+> extends SchemaTypeAdaptor<ArrayType, Schema> {
+  setItemAdaptor(adaptor: SchemaTypeAdaptor<Type, Schema>): any;
 
-  getItemAdaptor(): SchemaTypeAdaptor<T> | undefined;
+  getItemAdaptor(): SchemaTypeAdaptor<Type, Schema> | undefined;
 }
 
 export interface RuleInterface {

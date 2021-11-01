@@ -1,9 +1,10 @@
-import { Schema } from "rsuite";
-import { NumberType } from "rsuite/lib/Schema/NumberType";
+import { NumberType } from "../types";
 import BaseTypeAdaptor from "./BaseTypeAdaptor";
 
-class NumberTypeAdaptor extends BaseTypeAdaptor<NumberType> {
-  protected $type = "number";
+class NumberTypeAdaptor<
+  T extends Record<string, unknown>
+> extends BaseTypeAdaptor<NumberType, T> {
+  protected $type = "number" as const;
 
   protected getSize(value: number): number {
     return value;

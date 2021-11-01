@@ -1,4 +1,12 @@
-import Schema, { CheckType } from "rsuite/lib/Schema";
+import {
+  CheckType,
+  ArrayType,
+  BooleanType,
+  DateType,
+  NumberType,
+  ObjectType,
+  StringType,
+} from "schema-typed";
 import _upperFirst from "lodash.upperfirst";
 import {
   ErrorMessageFormatter,
@@ -6,23 +14,34 @@ import {
   RuleType,
   SchemaTypeAdaptor,
   SchemaTypeArrayAdaptor,
+  Types,
+  TypeSlug,
   Validator,
 } from "../types";
 import MessageFormatter from "../MessageFormatter";
 
-abstract class BaseTypeAdaptor<T extends CheckType>
-  implements SchemaTypeAdaptor<T> {
+const Types = {
+  ArrayType,
+  BooleanType,
+  DateType,
+  NumberType,
+  ObjectType,
+  StringType,
+} as const;
+
+abstract class BaseTypeAdaptor<Type extends Types, T = Record<string, unknown>>
+  implements SchemaTypeAdaptor<Type, T> {
   protected $fieldName: string;
 
   protected $messageFormatter: MessageFormatter;
 
-  protected abstract $type: string;
+  protected abstract $type: TypeSlug;
 
-  protected $arrayAdaptor?: SchemaTypeArrayAdaptor<T>;
+  protected $arrayAdaptor?: SchemaTypeArrayAdaptor<Type, T>;
 
-  protected $schemaType?: T;
+  protected $schemaType?: Type;
 
-  protected $schemaTypeConstructor?: (...args: any[]) => T;
+  protected $schemaTypeConstructor?: (...args: any[]) => Type;
 
   constructor(fieldName: string, validator: Validator) {
     this.$fieldName = fieldName;
@@ -33,35 +52,35 @@ abstract class BaseTypeAdaptor<T extends CheckType>
     return this.$fieldName;
   }
 
-  getType(): string {
+  getType(): TypeSlug {
     return this.$type;
   }
 
-  setArrayAdaptor(adaptor: SchemaTypeArrayAdaptor<T>): void {
+  setArrayAdaptor(adaptor: SchemaTypeArrayAdaptor<Type, T>): void {
     this.$arrayAdaptor = adaptor;
   }
 
-  getArrayAdaptor(): SchemaTypeArrayAdaptor<T> | undefined {
+  getArrayAdaptor(): SchemaTypeArrayAdaptor<Type, T> | undefined {
     return this.$arrayAdaptor;
   }
 
-  getSchemaType(): T {
+  getSchemaType(): Type {
     if (!this.$schemaType) {
       this.$schemaType = this.makeSchemaType();
     }
-    return this.$schemaType;
+    return this.$schemaType!;
   }
 
-  protected makeSchemaType(): T {
+  protected makeSchemaType(): Type {
     return this.guessSchemaTypeConstructor()?.(
       this.getErrorMessage(this.$type)
     );
   }
 
-  protected guessSchemaTypeConstructor(): (...args: any[]) => T {
+  protected guessSchemaTypeConstructor(): (...args: any[]) => Type {
     return (
       this.$schemaTypeConstructor ??
-      (Schema.Types as any)[`${_upperFirst(this.$type)}Type`]
+      (Types[`${_upperFirst(this.$type) as Capitalize<TypeSlug>}Type`] as any)
     );
   }
 
@@ -165,7 +184,7 @@ abstract class BaseTypeAdaptor<T extends CheckType>
 
   gt(field: string): this {
     this.getSchemaType().addRule((value, data) => {
-      const otherSize = this.getSize!(data[field]);
+      const otherSize = this.getSize!(data![field as keyof T]);
       return {
         hasError: !(this.getSize!(value) > otherSize),
         errorMessage: this.getErrorMessage("gt", {
@@ -180,7 +199,7 @@ abstract class BaseTypeAdaptor<T extends CheckType>
 
   gte(field: string): this {
     this.getSchemaType().addRule((value, data) => {
-      const otherSize = this.getSize!(data[field]);
+      const otherSize = this.getSize!(data![field as keyof T]);
       return {
         hasError: !(this.getSize!(value) >= otherSize),
         errorMessage: this.getErrorMessage("gte", {
@@ -195,7 +214,7 @@ abstract class BaseTypeAdaptor<T extends CheckType>
 
   lt(field: string): this {
     this.getSchemaType().addRule((value, data) => {
-      const otherSize = this.getSize!(data[field]);
+      const otherSize = this.getSize!(data![field as keyof T]);
       return {
         hasError: !(this.getSize!(value) < otherSize),
         errorMessage: this.getErrorMessage("lt", {
@@ -210,7 +229,7 @@ abstract class BaseTypeAdaptor<T extends CheckType>
 
   lte(field: string): this {
     this.getSchemaType().addRule((value, data) => {
-      const otherSize = this.getSize!(data[field]);
+      const otherSize = this.getSize!(data![field as keyof T]);
       return {
         hasError: !(this.getSize!(value) <= otherSize),
         errorMessage: this.getErrorMessage("lte", {
@@ -225,7 +244,7 @@ abstract class BaseTypeAdaptor<T extends CheckType>
 
   same(field: string): this {
     this.getSchemaType().addRule((value, data) => {
-      return value === data[field];
+      return value === data![field as keyof T];
     }, this.getErrorMessage("same", { other: field }));
 
     return this;
@@ -233,7 +252,7 @@ abstract class BaseTypeAdaptor<T extends CheckType>
 
   different(field: string): this {
     this.getSchemaType().addRule((value, data) => {
-      return value !== data[field];
+      return value !== data![field as keyof T];
     }, this.getErrorMessage("same", { other: field }));
 
     return this;
